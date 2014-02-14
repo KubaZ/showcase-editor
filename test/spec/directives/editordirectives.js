@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: mydirective', function () {
+describe('Directive: editorDirectives', function () {
 
   // load the directive's module
   beforeEach(module('showcaseEditorApp'));
@@ -13,8 +13,8 @@ describe('Directive: mydirective', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<mydirective></mydirective>');
+    element = angular.element('<editor-directives></editor-directives>');
     element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the mydirective directive');
+    expect(element.text()).toBe('this is the editorDirectives directive');
   }));
 });

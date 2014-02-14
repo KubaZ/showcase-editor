@@ -1,15 +1,14 @@
 'use strict';
 
 angular.module('showcaseEditorApp', [
-  'ngCookies',
-  'ngSanitize',
-  'ngRoute'
+  'ngRoute',
+  'editorControllers'
 ])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        controller: 'MainController'
       })
       .otherwise({
         redirectTo: '/'
