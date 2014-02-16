@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('showcaseEditorApp', [
+angular.module('showcaseEditor', [
   'ngRoute',
-  'editorControllers'
+  'showcaseEditor.controllers',
+  'showcaseEditor.directives'
 ])
   .config(function ($routeProvider) {
     $routeProvider

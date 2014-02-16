@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('showcaseEditorApp')
+angular.module('showcaseEditor.directives', [])
   .directive('ngThumb', ['$window', function($window) {
     var helper = {
       support: !!($window.FileReader && $window.CanvasRenderingContext2D),
@@ -35,8 +35,8 @@ angular.module('showcaseEditorApp')
 
         function onLoadImage() {
           /*jshint validthis:true */
-          var width = this.width / 10;
-          var height = this.height / 10;
+          var width = this.width * (params.height / this.height);
+          var height = params.height;
           canvas.attr({ width: width, height: height });
           canvas[0].getContext('2d').drawImage(this, 0, 0, width, height);
         }
