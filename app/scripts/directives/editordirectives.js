@@ -15,12 +15,12 @@ angular.module('showcaseEditor.directives', [])
 
     return {
       restrict: 'A',
-      link: function(scope, element, attributes) {
+      link: function(scope, element, attrs) {
         if (!helper.support) {
           return;
         }
 
-        var params = scope.$eval(attributes.ngThumb);
+        var params = scope.$eval(attrs.ngThumb);
 
         if (!helper.isFile(params.file)) {
           return;
@@ -32,14 +32,13 @@ angular.module('showcaseEditor.directives', [])
         var canvas = element.find('canvas');
         var reader = new FileReader();
 
-        function onLoadImage() {
-          /*jshint validthis:true */
-          canvas[0].getContext('2d').drawImage(this, 0, 0, params.width, params.height);
+        function previewImage(img) {
+          canvas[0].getContext('2d').drawImage(this, 0, 0, attrs.width, attrs.height);
         }
 
         function onLoadFile(event) {
           var img = new Image();
-          img.onload = onLoadImage;
+          img.onload = previewImage;
           img.src = event.target.result;
         }
 

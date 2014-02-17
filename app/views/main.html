@@ -1,4 +1,4 @@
-<div ng-controller="MainController" ng-file-drop="" class="ng-scope">
+<div ng-file-drop="" class="ng-scope">
     <div class="row">
         <div class="">
             <h2>Showcase editor</h2>
@@ -18,16 +18,18 @@
                 <label for="showcaseHeight">Height: </label>
                 <input class="form-control" type="text" ng-disabled="true" ng-value="showcase.type.height">
               </div>
-              <input class="hidden" type="file" ng-file-select="">
+              <input class="hidden showcase-file-holder" type="file" ng-file-select="" ng-model="showcase.file">
             </form>
-
-            <div class="well my-drop-zone" ng-file-drop="" ng-click="">Drag file here.</div>
+            <div class="well my-drop-zone" ng-file-drop="" editor-trigger-input="showcase-file-holder">
+              <h3 class="text-center"><i class="glyphicon glyphicon-upload"></i>Drag file here.</h3>
+            </div>
             <div ng-repeat="item in uploader.queue">
                 <h4>{{ item.file.name }}</h4>
                 <div class="text-center"
                   ng-show="uploader.isHTML5"
-                  ng-thumb="{ file: item.file, width: {{showcase.type.width}}, height: {{showcase.type.height}} }">
-                  <canvas width="{{showcase.type.width}}" height="{{ showcase.type.height }}"></canvas>
+                  ng-thumb="{file: item.file}" data-width="{{ showcase.type.width }}"
+                  data-height="{{ showcase.type.height }}">
+                  <canvas width="{{ showcase.type.width }}" height="{{ showcase.type.height }}"></canvas>
                 </div>
                 <h5 ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024|number:2 }} KB</h5>
                 <div ng-show="uploader.isHTML5" class="progress" style="margin-bottom: 0;">
@@ -86,7 +88,7 @@
                     </div>
                 </form>
                 <div nowrap>
-                    <button type="button" class="btn btn-success btn-sm" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                    <button type="button" class="btn btn-success btn-sm" ng-click="addShowcase()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
                         <span class="glyphicon glyphicon-upload"></span>Upload
                     </button>
                     <button type="button" class="btn btn-warning btn-sm" ng-click="item.cancel()" ng-disabled="!item.isUploading">
