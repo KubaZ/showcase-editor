@@ -1,6 +1,11 @@
 'use strict';
 
-var editorControllers = angular.module('showcaseEditor.controllers', ['angularFileUpload']);
+var editorControllers = angular.module('showcaseEditor.controllers',
+  [
+    'angularFileUpload',
+    'imageMapEditor'
+  ]
+);
 
 editorControllers.controller('MainController', ['$scope', '$fileUploader',
   function ($scope, $fileUploader) {
@@ -37,8 +42,8 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
       return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
     });
 
-    // Count limit
-    uploader.filters.push(function(item) {
+    // Files limit
+    uploader.filters.push(function() {
       return uploader.queue.length < 1;
     });
 

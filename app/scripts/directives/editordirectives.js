@@ -15,7 +15,6 @@ angular.module('showcaseEditor.directives', [])
 
     return {
       restrict: 'A',
-      template: '<canvas />',
       link: function(scope, element, attrs) {
         if (!helper.support) {
           return;
@@ -31,7 +30,7 @@ angular.module('showcaseEditor.directives', [])
           return;
         }
 
-        var canvas = element.find('canvas')[0];
+        var canvas = element[0];
         var ctx = canvas.getContext('2d');
         var reader = new FileReader();
 
@@ -66,10 +65,10 @@ angular.module('showcaseEditor.directives', [])
   }])
   .directive('triggerFileInput', function () {
     return {
-      restrict: 'A',
-      link: function (scope, element, attrs) {
-        var params = scope.$eval(attrs.triggerFileInput);
-        var target = $(params.selector)[0];
+      link: function (scope, element) {
+        element.find('.trigger').bind('click', function () {
+          element.find('input').focus().trigger('click');
+        });
       }
-    }
+    };
   });

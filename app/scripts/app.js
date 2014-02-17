@@ -3,7 +3,8 @@
 angular.module('showcaseEditor', [
   'ngRoute',
   'showcaseEditor.controllers',
-  'showcaseEditor.directives'
+  'showcaseEditor.directives',
+  'showcaseEditor.filters'
 ])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider

@@ -31,12 +31,6 @@ body {
   border-top: 1px solid #e5e5e5;
 }
 
-/* Customize container */
-@media (min-width: 768px) {
-  .container {
-    max-width: 730px;
-  }
-}
 .container-narrow > hr {
   margin: 30px 0;
 }
@@ -76,4 +70,28 @@ body {
   .jumbotron {
     border-bottom: 0;
   }
+}
+
+.my-drop-zone {
+  position: relative;
+}
+
+.hidden-file-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.trigger {
+  cursor: pointer;
+}
+
+.showcase-preview {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.showcase-preview .area {
+  position: absolute;
+  top: 0;
 }

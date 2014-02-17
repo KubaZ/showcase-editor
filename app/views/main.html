@@ -1,123 +1,129 @@
 <section ng-file-drop="" class="showcase-editor">
   <h2>Showcase editor</h2>
-  <form action="" class="form-horizontal" style="margin-bottom:20px">
+  <form action="" class="col-sm-8 col-sm-offset-2 form-inline" style="margin-bottom:20px">
     <div class="form-group">
-      <label for="" class="col-md-3">Typ showcase'a:</label>
-      <div class="col-md-3">
-        <select class="form-control"
-          ng-model="showcase.type"
-          ng-init="showcase.type = showcase.type || showcaseTypes[0]"
-          ng-options="type.size for type in showcaseTypes"></select>
-      </div>
+      <label for="" class="control-label">Typ showcase'a:</label>
+      <select class="form-control"
+        ng-model="showcase.type"
+        ng-init="showcase.type = showcase.type || showcaseTypes[0]"
+        ng-options="type.size for type in showcaseTypes"></select>
     </div>
     <div class="form-group">
-      <label for="" class="col-md-3">Szerokość: </label>
-      <div class="col-md-3">
-        <input class="form-control" type="text" ng-disabled="true" ng-value="showcase.type.width">
-      </div>
+      <label for="" class="control-label">
+        Szerokość: <span class="value">{{ showcase.type.width | pixels }}</span>
+      </label>
     </div>
     <div class="form-group">
-      <label for="" class="col-md-3">Wysokość: </label>
-      <div class="col-md-3">
-        <input class="form-control" type="text" ng-disabled="true" ng-value="showcase.type.height">
-      </div>
+      <label for="" class="control-label">
+        Wysokość: <span class="value">{{ showcase.type.height | pixels }}</span>
+      </label>
     </div>
-    <input class="hidden showcase-file-holder" type="file" ng-file-select="" ng-model="showcase.file">
   </form>
-  <div class="well my-drop-zone" ng-file-drop="" trigger-file-input="{selector: '.showcase-file-holder'}">
-    <h3 class="text-center"><i class="glyphicon glyphicon-upload"></i>Drag image file here.</h3>
+  <div class="drop-zone-container clearfix" trigger-file-input="">
+    <div class="col-sm-offset-2 col-sm-8 well my-drop-zone trigger" ng-file-drop="">
+      <h3 class="text-center"><i class="glyphicon glyphicon-upload"></i>Przeciągnij tu obrazek albo kliknij.</h3>
+    </div>
+    <input type="file" class="hidden-file-input" ng-file-select="" ng-model="showcase.file">
   </div>
   <div ng-repeat="item in uploader.queue">
-      <h4>{{ item.file.name }}</h4>
-      <div class="text-center"
+      <h4 ng-show="uploader.isHTML5" class="text-center" nowrap>Rozmiar pliku: {{ item.file.size/1024|number:2 }} KB</h4>
+      <div class="text-center showcase-preview"
         ng-show="uploader.isHTML5"
-        showcase-preview="{file: item.file}" data-width="{{ showcase.type.width }}"
-        data-height="{{ showcase.type.height }}">
+        imagemap-editor>
+        <canvas class="preview"
+          showcase-preview="{file: item.file}"
+          data-width="{{ showcase.type.width }}"
+          data-height="{{ showcase.type.height }}"></canvas>
       </div>
-      <h5 ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024|number:2 }} KB</h5>
       <form class="form-horizontal">
-        <div class="col-md-6">
-          <div class="form-group">
-              <label for="" class="col-md-3">Nazwa: </label>
-              <div class="col-md-8">
+        <section class="global-properties clearfix">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="" class="control-label col-sm-3">Nazwa: </label>
+              <div class="col-sm-8">
                 <input type="text" class="form-control" ng-model="showcase.name">
               </div>
-          </div>
-          <div class="form-group">
-              <label for="" class="col-md-3">Kolejność: </label>
-              <div class="col-md-8">
+            </div>
+            <div class="form-group">
+              <label for="" class="control-label col-sm-3">Kolejność: </label>
+              <div class="col-sm-8">
                 <input type="text" class="form-control" ng-model="showcase.priority">
               </div>
-          </div>
-          <div class="form-group">
-              <label for="" class="col-md-3">Aktywność: </label>
-              <div class="col-md-8">
+            </div>
+            <div class="form-group">
+              <label for="" class="control-label col-sm-3">Aktywność: </label>
+              <div class="col-sm-8">
                 <input type="text" class="form-control" ng-model="showcase.isActive">
               </div>
+            </div>
           </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-              <label for="" class="col-md-3">Komercyjny: </label>
-              <div class="col-md-8">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="" class="control-label col-sm-3">Komercyjny: </label>
+              <div class="col-sm-8">
                 <input type="text" class="form-control" ng-model="showcase.isCommercial">
               </div>
-          </div>
-          <div class="form-group">
-              <label for="" class="col-md-3">Failsafe: </label>
-              <div class="col-md-8">
+            </div>
+            <div class="form-group">
+              <label for="" class="control-label col-sm-3">Failsafe: </label>
+              <div class="col-sm-8">
                 <input type="text" class="form-control" ng-model="showcase.failsafe">
               </div>
+            </div>
           </div>
-        </div>
-          <div class="area-properties">
+        </section>
+        <section ng-repeat="area in showcase.areas" class="area-properties">
+          <div class="col-sm-6">
             <div class="form-group">
-                <label for="" class="col-md-3">Url: </label>
-                <div class="col-md-8">
-                  <input type="text" class="form-control" ng-model="showcase.url">
-                </div>
+              <label for="" class="control-label col-sm-3">Url: </label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" ng-model="area.url">
+              </div>
             </div>
             <div class="form-group">
-                <label for="" class="col-md-3">Tytuł: </label>
-                <div class="col-md-8">
-                  <input type="text" class="form-control" ng-model="showcase.title">
-                </div>
+              <label for="" class="control-label col-sm-3">Tytuł: </label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" ng-model="area.title">
+              </div>
             </div>
             <div class="form-group">
-                <label for="" class="col-md-3">Sposób otwierania linku: </label>
-                <div class="col-md-8">
+              <label for="" class="control-label col-sm-3">Obszar: </label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" ng-model="area.coordinates">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="" class="control-label col-sm-3">Sposób otwierania linku: </label>
+              <div class="col-sm-8">
+                <select class="form-control"
+                  ng-init="area.target = area.target || linkTargets[0]"
+                  ng-model="area.target"
+                  ng-options="target.label for target in linkTargets"></select>
+              </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label col-sm-3">Kod przekierowania: </label>
+                <div class="col-sm-8">
                   <select class="form-control"
-                    ng-init="showcase.target = showcase.target || linkTargets[0]"
-                    ng-model="showcase.target"
-                    ng-options="target.label for target in linkTargets"></select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="" class="col-md-3">Kod przekierowania: </label>
-                <div class="col-md-8">
-                  <select class="form-control"
-                    ng-init="showcase.redirectCode = showcase.redirectCode || redirectCodes[0]"
-                    ng-model="showcase.redirectCode"
+                    ng-init="area.redirectCode = area.redirectCode || redirectCodes[0]"
+                    ng-model="area.redirectCode"
                     ng-options="code.label for code in redirectCodes"></select>
                 </div>
             </div>
           </div>
-      </form>
+        </section>
+      </form><!--
       <div ng-show="uploader.isHTML5" class="progress" style="margin-bottom: 0;">
         <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-        <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i>
-        </span>
-        <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i>
-        </span>
-        <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i>
-        </span>
-      </div>
-      <div nowrap>
+      </div> -->
+      <div class="btn-toolbar pull-right" nowrap>
           <button type="button" class="btn btn-success btn-sm" ng-click="addShowcase()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
-              <span class="glyphicon glyphicon-upload"></span>Zapisz
+              <i class="glyphicon glyphicon-upload"></i>Zapisz
           </button>
           <button type="button" class="btn btn-danger btn-sm" ng-click="item.remove()">
-              <span class="glyphicon glyphicon-trash"></span>Usuń
+              <i class="glyphicon glyphicon-trash"></i>Usuń
           </button>
       </div>
   </div>
