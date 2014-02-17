@@ -5,7 +5,7 @@ angular.module('showcaseEditor', [
   'showcaseEditor.controllers',
   'showcaseEditor.directives'
 ])
-  .config(function ($routeProvider) {
+  .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -14,4 +14,4 @@ angular.module('showcaseEditor', [
       .otherwise({
         redirectTo: '/'
       });
-  });
+  }]);

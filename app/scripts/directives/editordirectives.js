@@ -15,7 +15,6 @@ angular.module('showcaseEditor.directives', [])
 
     return {
       restrict: 'A',
-      template: '<canvas/>',
       link: function(scope, element, attributes) {
         if (!helper.support) {
           return;
@@ -35,10 +34,7 @@ angular.module('showcaseEditor.directives', [])
 
         function onLoadImage() {
           /*jshint validthis:true */
-          var width = this.width * (params.height / this.height);
-          var height = params.height;
-          canvas.attr({ width: width, height: height });
-          canvas[0].getContext('2d').drawImage(this, 0, 0, width, height);
+          canvas[0].getContext('2d').drawImage(this, 0, 0, params.width, params.height);
         }
 
         function onLoadFile(event) {
@@ -49,8 +45,6 @@ angular.module('showcaseEditor.directives', [])
 
         reader.onload = onLoadFile;
         reader.readAsDataURL(params.file);
-
-
       }
     };
   }]);
