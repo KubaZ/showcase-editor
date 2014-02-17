@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('showcaseEditor.directives', [])
-  .directive('ngThumb', ['$window', function($window) {
+  .directive('showcasePreview', ['$window', function($window) {
     var helper = {
       support: !!($window.FileReader && $window.CanvasRenderingContext2D),
       isFile: function(item) {
@@ -15,12 +15,14 @@ angular.module('showcaseEditor.directives', [])
 
     return {
       restrict: 'A',
+      template: '<canvas />',
       link: function(scope, element, attrs) {
         if (!helper.support) {
           return;
         }
 
-        var params = scope.$eval(attrs.ngThumb);
+        var params = scope.$eval(attrs.showcasePreview);
+        var image;
 
         if (!helper.isFile(params.file)) {
           return;
@@ -29,21 +31,45 @@ angular.module('showcaseEditor.directives', [])
           return;
         }
 
-        var canvas = element.find('canvas');
+        var canvas = element.find('canvas')[0];
+        var ctx = canvas.getContext('2d');
         var reader = new FileReader();
 
-        function previewImage(img) {
-          canvas[0].getContext('2d').drawImage(this, 0, 0, attrs.width, attrs.height);
+        function resizeCanvas() {
+          canvas.width = attrs.width;
+          canvas.height = attrs.height;
+        }
+
+        function previewImage() {
+          ctx.drawImage(image, 0, 0, attrs.width, attrs.height);
         }
 
         function onLoadFile(event) {
-          var img = new Image();
-          img.onload = previewImage;
-          img.src = event.target.result;
+          resizeCanvas();
+          image = new Image();
+          image.onload = previewImage;
+          image.src = event.target.result;
         }
+
+        attrs.$observe('width', function(newValue, oldValue) {
+          if (image) {
+            resizeCanvas();
+            ctx.scale(newValue / oldValue, 1);
+            previewImage();
+          }
+        });
 
         reader.onload = onLoadFile;
         reader.readAsDataURL(params.file);
       }
     };
-  }]);
+  }])
+  .directive('triggerFileInput', function () {
+    return {
+      restrict: 'A',
+      link: function (scope, element, attrs) {
+        var params = scope.$eval(attrs.triggerFileInput);
+        var target = $(params.selector)[0];
+      }
+    }
+  });
