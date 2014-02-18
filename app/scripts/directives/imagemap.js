@@ -96,7 +96,7 @@ angular.module('imageMapEditor', [])
       }
     };
   })
-  .directive('imageMap', function () {
+  .directive('imageMap', ['$timeout', function ($timeout) {
     return {
       restrict: 'A',
       link: function (scope, element, attributes) {
@@ -107,6 +107,10 @@ angular.module('imageMapEditor', [])
         var isMoving = false;
         var moveVector = [];
 
+        function safeApply(fn) {
+          (scope.$$phase || scope.$root.$$phase) ? fn() : scope.$apply(fn);
+        }
+
         scope.moveShape = function ($event) {
           if (isMoving) {
             var x = event.offsetX;
@@ -116,7 +120,6 @@ angular.module('imageMapEditor', [])
             styles.left = shapeCoords[0];
             styles.top = shapeCoords[1];
             $(element[0]).css(styles);
-            scope.showcase.areas[attributes.index].shape.coords = shapeCoords;
           }
         };
 
@@ -130,6 +133,9 @@ angular.module('imageMapEditor', [])
 
         scope.stopShapeMove = function ($event) {
           isMoving = false;
+          $timeout(function () {
+            scope.showcase.areas[attributes.index].shape.coords = shapeCoords;
+          });
         };
 
         scope.selectShape = function ($event) {
@@ -180,4 +186,4 @@ angular.module('imageMapEditor', [])
         drawMapPreview();
       }
     };
-  });
+  }]);
