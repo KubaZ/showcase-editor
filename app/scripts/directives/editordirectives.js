@@ -65,6 +65,7 @@ angular.module('showcaseEditor.directives', [])
   }])
   .directive('triggerFileInput', function () {
     return {
+      restrict: 'A',
       link: function (scope, element) {
         element.find('.trigger').bind('click', function () {
           element.find('input').focus().trigger('click');

@@ -14,9 +14,10 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
       scope: $scope,
       url: 'upload.php'
     });
+    $scope.showcase = {};
     $scope.showcaseTypes = [
-      {size: 'small', width: '330', height: '400'},
-      {size: 'big', width: '700', height: '400'}
+      {size: 'big', width: '700', height: '400'},
+      {size: 'small', width: '330', height: '400'}
     ];
     $scope.linkTargets = [
       {value: '_blank', label: 'Load in a new window'},
@@ -29,10 +30,31 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
       {value: '304', label: 'Not Modified'},
       {value: '308', label: 'Permanent Redirect'}
     ];
-
     $scope.addShowcase = function () {
       console.log($scope.showcase);
     };
+    $scope.showcase.areas = [
+      {
+        shape: {
+          type: 'rectangle',
+          coords: [120, 50, 180, 100]
+        },
+        url: 'http://example.com',
+        title: 'example-title',
+        target: 0,
+        redirectCode: 0
+      },
+      {
+        shape: {
+          type: 'circle',
+          coords: [200, 200, 40]
+        },
+        url: 'http://example2.com',
+        title: 'example-title2',
+        target: 0,
+        redirectCode: 0
+      }
+    ];
     // ADDING FILTERS
 
     // Images only

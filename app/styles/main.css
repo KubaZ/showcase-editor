@@ -91,7 +91,17 @@ body {
   position: relative;
 }
 
+.preview-container {
+  position: relative;
+  display: inline-block;
+}
+
 .showcase-preview .area {
   position: absolute;
-  top: 0;
+  background: transparent;
+}
+
+.showcase-preview .area:hover {
+  background: rgba(255,255,255,0.6);
+  cursor: pointer;
 }
