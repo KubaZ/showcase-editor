@@ -99,9 +99,10 @@ body {
 .showcase-preview .area {
   position: absolute;
   background: transparent;
+  z-index: 100;
 }
 
 .showcase-preview .area:hover {
-  background: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.4);
   cursor: pointer;
 }

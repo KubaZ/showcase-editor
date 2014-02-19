@@ -1,4 +1,4 @@
-<section ng-file-drop="" class="showcase-editor">
+<section ng-file-drop="" class="showcase-editor" ng-init="showcase = showcase || {}">
   <h2>Showcase editor</h2>
   <form action="" class="col-sm-8 col-sm-offset-2 form-inline" style="margin-bottom:20px">
     <div class="form-group">
@@ -25,10 +25,9 @@
     </div>
     <input type="file" class="hidden-file-input" ng-file-select="" ng-model="showcase.file">
   </div>
-  <div ng-repeat="item in uploader.queue" image-maps-editor="" data-areas-list="showcase.areas">
+  <div ng-repeat="item in uploader.queue" image-maps-editor="">
     <h4 ng-show="uploader.isHTML5" class="text-center" nowrap>Rozmiar pliku: {{ item.file.size/1024|number:2 }} KB</h4>
-    <div class="showcase-preview text-center"
-      ng-show="uploader.isHTML5">
+    <div class="showcase-preview text-center" ng-show="uploader.isHTML5">
       <div class="btn-toolbar clearfix" style="margin-bottom: 20px;">
         <button class="btn btn-default" ng-click="changeDrawingShape('rectangle')">Prostokąt</button>
         <button class="btn btn-default" ng-click="changeDrawingShape('circle')">Koło</button>
@@ -106,7 +105,7 @@
           <div class="form-group">
             <label for="" class="control-label col-sm-3">Obszar: </label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" ng-model="area.shape.coords" ng-disabled="true" ng-value="area.cords">
+              <input type="text" class="form-control" ng-model="area.shape" imagemap-display-coords>
             </div>
           </div>
         </div>

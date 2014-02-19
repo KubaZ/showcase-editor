@@ -14,57 +14,35 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
       scope: $scope,
       url: 'upload.php'
     });
-    $scope.showcase = {};
+
     $scope.showcaseTypes = [
       {size: 'big', width: '700', height: '400'},
       {size: 'small', width: '330', height: '400'}
     ];
+
     $scope.linkTargets = [
       {value: '_blank', label: 'Load in a new window'},
       {value: '_self', label: 'Load in the same frame as it was clicked'},
       {value: '_parent', label: 'Load in the parent frameset'},
       {value: '_top', label: 'Load in the full body of the window'}
     ];
+
     $scope.redirectCodes = [
       {value: '302', label: 'Found'},
       {value: '304', label: 'Not Modified'},
       {value: '308', label: 'Permanent Redirect'}
     ];
+
     $scope.addShowcase = function () {
       console.log($scope.showcase);
     };
-    $scope.showcase.areas = [
-      {
-        shape: {
-          type: 'rectangle',
-          coords: [120, 50, 180, 100]
-        },
-        url: 'http://example.com',
-        title: 'example-title',
-        target: 0,
-        redirectCode: 0
-      },
-      {
-        shape: {
-          type: 'circle',
-          coords: [200, 200, 40]
-        },
-        url: 'http://example2.com',
-        title: 'example-title2',
-        target: 0,
-        redirectCode: 0
-      }
-    ];
-    // ADDING FILTERS
 
-    // Images only
     uploader.filters.push(function(item /*{File|HTMLInputElement}*/) {
       var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
       type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
       return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
     });
 
-    // Files limit
     uploader.filters.push(function() {
       return uploader.queue.length < 1;
     });
