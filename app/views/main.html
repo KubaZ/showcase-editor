@@ -25,7 +25,7 @@
     </div>
     <input type="file" class="hidden-file-input" ng-file-select="" ng-model="showcase.file">
   </div>
-  <div ng-repeat="item in uploader.queue" image-maps-editor="">
+  <div ng-repeat="item in uploader.queue" image-maps-editor="" ng-init="map = map || {}">
     <h4 ng-show="uploader.isHTML5" class="text-center" nowrap>Rozmiar pliku: {{ item.file.size/1024|number:2 }} KB</h4>
     <div class="showcase-preview text-center" ng-show="uploader.isHTML5">
       <div class="btn-toolbar clearfix" style="margin-bottom: 20px;">
@@ -41,7 +41,7 @@
           ng-click="startDrawingShape($event)"
           ng-mousemove="drawShape($event)"></canvas>
         <canvas class="area"
-          ng-repeat="area in showcase.areas"
+          ng-repeat="area in map.areas"
           ng-click="selectShape($event)"
           ng-mousedown="startShapeMove($event)"
           ng-mousemove="moveShape($event)"
@@ -87,7 +87,7 @@
           </div>
         </div>
       </section>
-      <section ng-repeat="area in showcase.areas" class="area-properties clearfix">
+      <section ng-repeat="area in map.areas" class="area-properties clearfix">
         <h4>Właściwości obszaru:</h4>
         <div class="col-sm-6">
           <div class="form-group">

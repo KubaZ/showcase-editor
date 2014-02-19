@@ -6,19 +6,18 @@ angular.module('imageMapEditor', [])
       link: function (scope) {
         scope.isDrawing = false;
         var isRectangle = true, isCircle, isPolygon;
-        var areas = scope.showcase.areas;
-        var newArea = areas ? areas.length : 0;
+        var newArea = scope.map.areas ? scope.map.areas.length : 0;
         var currentShape, currentShapeType = 'rectangle';
 
-        if (!areas) {
-          scope.showcase.areas = [];
+        if (!scope.map.areas) {
+          scope.map.areas = [];
         }
 
         function createNewArea () {
-          scope.showcase.areas[newArea] = {};
-          scope.showcase.areas[newArea].shape = {};
-          scope.showcase.areas[newArea].shape.type = currentShapeType;
-          currentShape = scope.showcase.areas[newArea].shape;
+          scope.map.areas[newArea] = {};
+          scope.map.areas[newArea].shape = {};
+          scope.map.areas[newArea].shape.type = currentShapeType;
+          currentShape = scope.map.areas[newArea].shape;
         }
 
         scope.changeDrawingShape = function (shape) {
@@ -149,7 +148,7 @@ angular.module('imageMapEditor', [])
 
         scope.stopShapeMove = function () {
           isMoving = false;
-          scope.showcase.areas[attributes.index].shape = shape;
+          scope.map.areas[attributes.index].shape = shape;
         };
 
         scope.selectShape = function () {
