@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('imageMapEditor', [])
-  .directive('imageMapsEditor', function () {
+  .directive('imageMapsEditor', ['$document', function($document) {
     return {
       link: function (scope) {
         scope.isDrawing = false;
+        scope.shiftKey = false;
         var isRectangle = true, isCircle, isPolygon;
         var newArea = scope.map.areas ? scope.map.areas.length : 0;
         var currentShape, currentShapeType = 'rectangle';
@@ -12,6 +13,16 @@ angular.module('imageMapEditor', [])
         if (!scope.map.areas) {
           scope.map.areas = [];
         }
+
+        $document.keydown(function (event) {
+          if (event.shiftKey) {
+            scope.shiftKey = true;
+          }
+        });
+
+        $document.keyup(function () {
+          scope.shiftKey = false;
+        });
 
         function createNewArea (x, y) {
           newArea = scope.map.areas.length;
@@ -100,19 +111,31 @@ angular.module('imageMapEditor', [])
             scope.isDrawing = true;
             createNewArea(x, y);
             if (isRectangle) {
-              currentShape.coords.push(x,y,x,y);
+              return currentShape.coords.push(x,y,x,y);
             }
 
             if (isCircle) {
-              currentShape.coords.push(x,y,0);
+              return currentShape.coords.push(x,y,0);
             }
-            return;
+
+            if (isPolygon) {
+              return currentShape.coords.push([x,y]);
+            }
           }
 
           if (isRectangle || isCircle) {
             scope.isDrawing = false;
             currentShape.complete = true;
             return;
+          }
+
+          if (isPolygon) {
+            currentShape.coords.push([x,y]);
+            if (scope.shiftKey) {
+              scope.isDrawing = false;
+              currentShape.complete = true;
+              return;
+            }
           }
         };
 
@@ -133,7 +156,7 @@ angular.module('imageMapEditor', [])
         };
       }
     };
-  })
+  }])
   .directive('imageMap', function () {
     return {
       restrict: 'A',
@@ -207,6 +230,22 @@ angular.module('imageMapEditor', [])
           fillShape();
         }
 
+        function drawPolygon() {
+          styles.left = 0;
+          styles.top = 0;
+          element.css(styles);
+          element[0].width = 700;
+          element[0].height = 400;
+
+          ctx.beginPath();
+          ctx.moveTo(shape.coords[0][0], shape.coords[0][1]);
+          for (var i = 0; i < shape.coords.length; i++) {
+            ctx.lineTo(shape.coords[i][0], shape.coords[i][1]);
+          }
+          ctx.closePath();
+          fillShape();
+        }
+
         function drawCircle() {
           styles.left = shape.coords[0];
           styles.top = shape.coords[1];
@@ -222,11 +261,15 @@ angular.module('imageMapEditor', [])
 
         function drawMapPreview() {
           if (shape.type === 'rectangle') {
-            drawRectangle();
+            return drawRectangle();
           }
 
           if (shape.type === 'circle') {
-            drawCircle();
+            return drawCircle();
+          }
+
+          if (shape.type === 'polygon') {
+            return drawPolygon();
           }
         }
 
