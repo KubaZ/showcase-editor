@@ -13,12 +13,59 @@ angular.module('imageMapEditor', [])
           scope.map.areas = [];
         }
 
-        function createNewArea () {
+        function createNewArea (x, y) {
           newArea = scope.map.areas.length;
           scope.map.areas[newArea] = {};
           scope.map.areas[newArea].shape = {};
           scope.map.areas[newArea].shape.type = currentShapeType;
           currentShape = scope.map.areas[newArea].shape;
+          currentShape.coords = [];
+          currentShape.startX = x;
+          currentShape.startY = y;
+          currentShape.complete = false;
+        }
+
+        function setCircleCoords (x, y) {
+          var xOffset = Math.abs(currentShape.startX - x);
+          var yOffset = Math.abs(currentShape.startY - y);
+          var radius;
+
+          if (xOffset <= yOffset) {
+            radius = yOffset;
+            currentShape.coords[0] = currentShape.startX - radius;
+            currentShape.coords[1] = currentShape.startY - radius;
+          } else {
+            radius = xOffset;
+            currentShape.coords[0] = currentShape.startX - radius;
+            currentShape.coords[1] = currentShape.startY - radius;
+          }
+          currentShape.coords[2] = radius;
+        }
+
+        function setRectangleCoords (x, y) {
+          if (currentShape.startX < x && currentShape.startY < y) {
+            currentShape.coords[0] = currentShape.startX;
+            currentShape.coords[1] = currentShape.startY;
+            currentShape.coords[2] = x;
+            currentShape.coords[3] = y;
+            return;
+          }
+
+          if (currentShape.startX > x) {
+            currentShape.coords[2] = currentShape.startX;
+            currentShape.coords[0] = x;
+          } else {
+            currentShape.coords[0] = currentShape.startX;
+            currentShape.coords[2] = x;
+          }
+
+          if (currentShape.startY > y) {
+            currentShape.coords[3] = currentShape.startY;
+            currentShape.coords[1] = y;
+          } else {
+            currentShape.coords[1] = currentShape.startY;
+            currentShape.coords[3] = y;
+          }
         }
 
         scope.changeDrawingShape = function (shape) {
@@ -46,65 +93,40 @@ angular.module('imageMapEditor', [])
         };
 
         scope.startDrawingShape = function (event) {
-          var x = event.offsetX;
-          var y = event.offsetY;
+          var x = event.offsetX ? event.offsetX : event.originalEvent.layerX;
+          var y = event.offsetY ? event.offsetY : event.originalEvent.layerY;
 
           if (!scope.isDrawing) {
             scope.isDrawing = true;
-            createNewArea();
+            createNewArea(x, y);
             if (isRectangle) {
-              currentShape.coords = [];
               currentShape.coords.push(x,y,x,y);
             }
 
             if (isCircle) {
-              currentShape.coords = [];
               currentShape.coords.push(x,y,0);
-              currentShape.centerX = x;
-              currentShape.centerY = y;
             }
             return;
           }
 
-          if (isRectangle) {
+          if (isRectangle || isCircle) {
             scope.isDrawing = false;
-            currentShape.coords[2] = x;
-            currentShape.coords[3] = y;
-            return;
-          }
-
-          if (isCircle) {
-            scope.isDrawing = false;
+            currentShape.complete = true;
             return;
           }
         };
 
         scope.drawShape = function (event) {
           if (scope.isDrawing) {
-            var x = event.offsetX;
-            var y = event.offsetY;
+            var x = event.offsetX ? event.offsetX : event.originalEvent.layerX;
+            var y = event.offsetY ? event.offsetY : event.originalEvent.layerY;
 
             if (isRectangle) {
-              currentShape.coords[2] = x;
-              currentShape.coords[3] = y;
+              setRectangleCoords(x, y);
             }
 
             if (isCircle) {
-              var xOffset = Math.abs(currentShape.centerX - x);
-              var yOffset = Math.abs(currentShape.centerY - y);
-              var radius;
-
-              if (xOffset <= yOffset) {
-                radius = yOffset / 2;
-                currentShape.coords[2] = radius;
-                currentShape.coords[0] = currentShape.centerX - radius;
-                currentShape.coords[1] = currentShape.centerY - radius;
-              } else {
-                radius = xOffset / 2;
-                currentShape.coords[2] = radius;
-                currentShape.coords[0] = currentShape.centerX - radius;
-                currentShape.coords[1] = currentShape.centerY - radius;
-              }
+              setCircleCoords(x, y);
             }
             return;
           }
@@ -120,22 +142,22 @@ angular.module('imageMapEditor', [])
         var styles = {};
         var ctx = element[0].getContext('2d');
         var isMoving = false;
-        var moveVector = [];
+        var startPoints = [];
 
         scope.moveShape = function (event) {
           if (isMoving) {
-            var x = event.offsetX;
-            var y = event.offsetY;
+            var x = event.offsetX ? event.offsetX : event.originalEvent.layerX;
+            var y = event.offsetY ? event.offsetY : event.originalEvent.layerY;
             if (shape.type === 'rectangle') {
-              shape.coords[0]+= x - moveVector[0];
-              shape.coords[1]+= y - moveVector[1];
-              shape.coords[2]+= x - moveVector[0];
-              shape.coords[3]+= y - moveVector[1];
+              shape.coords[0]+= x - startPoints[0];
+              shape.coords[1]+= y - startPoints[1];
+              shape.coords[2]+= x - startPoints[0];
+              shape.coords[3]+= y - startPoints[1];
             }
 
             if (shape.type === 'circle') {
-              shape.coords[0]+= x - moveVector[0];
-              shape.coords[1]+= y - moveVector[1];
+              shape.coords[0]+= x - startPoints[0];
+              shape.coords[1]+= y - startPoints[1];
             }
 
             styles.left = shape.coords[0];
@@ -145,11 +167,11 @@ angular.module('imageMapEditor', [])
         };
 
         scope.startShapeMove = function (event) {
-          var x = event.offsetX;
-          var y = event.offsetY;
+          var x = event.offsetX ? event.offsetX : event.originalEvent.layerX;
+          var y = event.offsetY ? event.offsetY : event.originalEvent.layerY;
           isMoving = true;
-          moveVector[0] = x;
-          moveVector[1] = y;
+          startPoints[0] = x;
+          startPoints[1] = y;
         };
 
         scope.stopShapeMove = function () {
@@ -208,10 +230,20 @@ angular.module('imageMapEditor', [])
           }
         }
 
+        function bringForward () {
+          element.addClass('complete');
+        }
+
         drawMapPreview();
 
-        scope.$watch('area', function () {
+        scope.$watch('area.shape.coords', function () {
           drawMapPreview();
+        }, true);
+
+        scope.$watch('area.shape.complete', function (newValue) {
+          if (newValue) {
+            bringForward();
+          }
         }, true);
       }
     };

@@ -33,7 +33,8 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
       {value: '308', label: 'Permanent Redirect'}
     ];
 
-    $scope.addShowcase = function () {
+    $scope.submitShowcase = function () {
+
       console.log($scope.showcase);
     };
 

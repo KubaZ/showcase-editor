@@ -102,6 +102,23 @@ body {
   z-index: 100;
 }
 
+.showcase-preview .area.complete {
+  z-index: 102;
+}
+
+.preview-transparent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: transparent;
+  opacity: 0;
+  z-index: 101;
+}
+
+.preview-transparent.active {
+  z-index: 103;
+}
+
 .showcase-preview .area:hover {
   background: rgba(255,255,255,0.4);
   cursor: pointer;
