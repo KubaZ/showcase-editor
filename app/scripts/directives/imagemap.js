@@ -14,6 +14,7 @@ angular.module('imageMapEditor', [])
         }
 
         function createNewArea () {
+          newArea = scope.map.areas.length;
           scope.map.areas[newArea] = {};
           scope.map.areas[newArea].shape = {};
           scope.map.areas[newArea].shape.type = currentShapeType;
@@ -59,23 +60,23 @@ angular.module('imageMapEditor', [])
             if (isCircle) {
               currentShape.coords = [];
               currentShape.coords.push(x,y,0);
+              currentShape.centerX = x;
+              currentShape.centerY = y;
             }
-            return console.log('startDrawingShape');
+            return;
           }
 
           if (isRectangle) {
-            console.log('stopedDrawingShape');
             scope.isDrawing = false;
             currentShape.coords[2] = x;
             currentShape.coords[3] = y;
+            return;
           }
 
           if (isCircle) {
             scope.isDrawing = false;
-            console.log('stopedDrawingShape');
+            return;
           }
-
-          newArea++;
         };
 
         scope.drawShape = function (event) {
@@ -89,19 +90,24 @@ angular.module('imageMapEditor', [])
             }
 
             if (isCircle) {
-              var xOffset = Math.abs(currentShape.coords[0] - x);
-              var yOffset = Math.abs(currentShape.coords[1] - y);
+              var xOffset = Math.abs(currentShape.centerX - x);
+              var yOffset = Math.abs(currentShape.centerY - y);
+              var radius;
 
               if (xOffset <= yOffset) {
-                currentShape.coords[2] = yOffset / 2;
+                radius = yOffset / 2;
+                currentShape.coords[2] = radius;
+                currentShape.coords[0] = currentShape.centerX - radius;
+                currentShape.coords[1] = currentShape.centerY - radius;
               } else {
-                currentShape.coords[2] = xOffset / 2;
+                radius = xOffset / 2;
+                currentShape.coords[2] = radius;
+                currentShape.coords[0] = currentShape.centerX - radius;
+                currentShape.coords[1] = currentShape.centerY - radius;
               }
             }
-            return console.log('Drawing');
+            return;
           }
-
-          console.log('notDrawing');
         };
       }
     };
@@ -153,6 +159,12 @@ angular.module('imageMapEditor', [])
 
         scope.selectShape = function () {
           console.log('select shape');
+        };
+
+        scope.removeArea = function () {
+          isMoving = false;
+          element.remove();
+          scope.map.areas.splice(attributes.index, 1);
         };
 
         function fillShape() {

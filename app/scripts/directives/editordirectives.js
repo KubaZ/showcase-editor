@@ -34,17 +34,11 @@ angular.module('showcaseEditor.directives', [])
         var ctx = canvas.getContext('2d');
         var reader = new FileReader();
 
-        function resizeCanvas() {
-          canvas.width = attrs.width;
-          canvas.height = attrs.height;
-        }
-
         function previewImage() {
           ctx.drawImage(image, 0, 0, attrs.width, attrs.height);
         }
 
         function onLoadFile(event) {
-          resizeCanvas();
           image = new Image();
           image.onload = previewImage;
           image.src = event.target.result;
@@ -52,7 +46,6 @@ angular.module('showcaseEditor.directives', [])
 
         attrs.$observe('width', function(newValue, oldValue) {
           if (image) {
-            resizeCanvas();
             ctx.scale(newValue / oldValue, 1);
             previewImage();
           }
