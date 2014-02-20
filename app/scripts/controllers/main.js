@@ -1,6 +1,11 @@
 'use strict';
 
-var editorControllers = angular.module('showcaseEditor.controllers', ['angularFileUpload']);
+var editorControllers = angular.module('showcaseEditor.controllers',
+  [
+    'angularFileUpload',
+    'imageMapEditor'
+  ]
+);
 
 editorControllers.controller('MainController', ['$scope', '$fileUploader',
   function ($scope, $fileUploader) {
@@ -11,8 +16,12 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
     });
 
     $scope.showcaseTypes = [
-      {size: 'big', width: '700', height: '400'},
-      {size: 'small', width: '330', height: '400'}
+      {size: 'big_layer', width: 700, height: 400},
+      {size: 'small_layer', width: 330, height: 400},
+      {size: 'big', width: 560, height: 540},
+      {size: 'small_top', width: 420, height: 220},
+      {size: 'small_bottom', width: 420, height: 300},
+      {size: 'full_width', width: 980, height: 360}
     ];
 
     $scope.linkTargets = [

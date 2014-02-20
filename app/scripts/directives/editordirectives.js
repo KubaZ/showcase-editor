@@ -16,43 +16,49 @@ angular.module('showcaseEditor.directives', [])
     return {
       restrict: 'A',
       link: function(scope, element, attrs) {
-        if (!helper.support) {
-          return;
-        }
-
-        var params = scope.$eval(attrs.showcasePreview);
         var image;
 
-        if (!helper.isFile(params.file)) {
-          return;
-        }
-        if (!helper.isImage(params.file)) {
-          return;
-        }
-
-        var canvas = element[0];
-        var ctx = canvas.getContext('2d');
-        var reader = new FileReader();
-
-        function previewImage() {
-          ctx.drawImage(image, 0, 0, attrs.width, attrs.height);
-        }
-
-        function onLoadFile(event) {
-          image = new Image();
-          image.onload = previewImage;
-          image.src = event.target.result;
-        }
-
-        attrs.$observe('width', function(newValue, oldValue) {
-          if (image) {
-            ctx.scale(newValue / oldValue, 1);
-            previewImage();
+        function showImage() {
+          if (!helper.support) {
+            return;
           }
-        });
+  
+          var params = scope.$eval(attrs.showcasePreview);
+  
+          if (!helper.isFile(params.file)) {
+            return;
+          }
+          if (!helper.isImage(params.file)) {
+            return;
+          }
+  
+          var canvas = element[0];
+          var ctx = canvas.getContext('2d');
+          var reader = new FileReader();
+  
+          function drawImageToCanvas() {
+            ctx.drawImage(image, 0, 0, attrs.width, attrs.height);
+          }
+  
+          function onLoadFile(event) {
+            image = new Image();
+            image.onload = drawImageToCanvas;
+            image.src = event.target.result;
+          }
+  
+          reader.onload = onLoadFile;
+          reader.readAsDataURL(params.file);
 
-        reader.onload = onLoadFile;
-        reader.readAsDataURL(params.file);
+          scope.$watch('showcase.type', function() {
+            if (image) {
+              drawImageToCanvas();
+            }
+          });
+        }
+
+        scope.$watch('uploader.queue[0]', function() {
+          showImage();
+        });
       }
     };
   }])

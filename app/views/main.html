@@ -25,8 +25,8 @@
     </div>
     <input type="file" class="hidden-file-input" ng-file-select="" ng-model="showcase.file">
   </div>
-  <div ng-repeat="item in uploader.queue" image-maps-editor="" ng-init="map = map || {}">
-    <h4 ng-show="uploader.isHTML5" class="text-center" nowrap>Rozmiar pliku: {{ item.file.size/1024|number:2 }} KB</h4>
+  <div image-maps-editor="" ng-init="map = map || {}">
+    <h4 ng-show="uploader.isHTML5" class="text-center" nowrap>Rozmiar pliku: {{ uploader.queue[0].file.size/1024|number:2 }} KB</h4>
     <div class="showcase-preview text-center" ng-show="uploader.isHTML5">
       <div class="btn-toolbar clearfix" style="margin-bottom: 20px;">
         <button class="btn btn-default" ng-click="changeDrawingShape('rectangle')">Prostokąt</button>
@@ -36,7 +36,7 @@
       <div class="preview-container">
         <div class="canvas-container">
           <canvas class="preview"
-            showcase-preview="{file: item.file}"
+            showcase-preview="{file: uploader.queue[0].file}"
             width="{{ showcase.type.width }}"
             height="{{ showcase.type.height }}"></canvas>
           <canvas class="area"
@@ -47,7 +47,7 @@
             ng-mouseup="stopShapeMove($event)"
             data-index="{{$index}}"
             ng-dblclick="removeArea($event)"
-            image-map></canvas>
+            map-area></canvas>
         </div>
         <canvas class="preview-transparent"
           width="{{ showcase.type.width }}"

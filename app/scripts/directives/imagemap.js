@@ -165,7 +165,7 @@ angular.module('imageMapEditor', [])
       }
     };
   }])
-  .directive('imageMap', function () {
+  .directive('mapArea', function () {
     return {
       restrict: 'A',
       link: function (scope, element, attributes) {
