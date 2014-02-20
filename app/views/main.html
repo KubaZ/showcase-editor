@@ -1,22 +1,20 @@
-<section ng-file-drop="" class="showcase-editor" ng-init="showcase = showcase || {}">
-  <h2>Showcase editor</h2>
-  <form ngSubmit="submitShowcase()" class="col-sm-8 col-sm-offset-2 form-inline" style="margin-bottom:20px">
+<section class="showcase-editor" ng-init="showcase = showcase || {}">
+  <h2>Edytor obszarów klikalnych</h2>
+  <form class="col-sm-8 col-sm-offset-2 form-horizontal">
     <div class="form-group">
-      <label for="" class="control-label">Typ showcase'a:</label>
-      <select class="form-control"
-        ng-model="showcase.type"
-        ng-init="showcase.type = showcase.type || showcaseTypes[0]"
-        ng-options="type.size for type in showcaseTypes"></select>
+      <label for="" class="control-label col-sm-3">Typ showcase'a:</label>
+      <div class="col-sm-9">
+        <select class="form-control"
+          ng-model="showcase.type"
+          ng-init="showcase.type = showcase.type || showcaseTypes[0]"
+          ng-options="type.size for type in showcaseTypes"></select>
+      </div>
     </div>
     <div class="form-group">
-      <label for="" class="control-label">
-        Szerokość: <span class="value">{{ showcase.type.width | pixels }}</span>
-      </label>
-    </div>
-    <div class="form-group">
-      <label for="" class="control-label">
-        Wysokość: <span class="value">{{ showcase.type.height | pixels }}</span>
-      </label>
+      <label class="control-label col-sm-3">Url zdjęcia: </label>
+      <div class="col-sm-9">
+        <input type="url" class="form-control" ng-change="displayImageFromUrl()" ng-model="showcase.image.url">
+      </div>
     </div>
   </form>
   <div class="drop-zone-container clearfix" trigger-file-input="">
@@ -25,18 +23,22 @@
     </div>
     <input type="file" class="hidden-file-input" ng-file-select="" ng-model="showcase.file">
   </div>
+  <div class="form-horizontal">
+  </div>
   <div image-maps-editor="" ng-init="map = map || {}">
-    <h4 ng-show="uploader.isHTML5" class="text-center" nowrap>Rozmiar pliku: {{ uploader.queue[0].file.size/1024|number:2 }} KB</h4>
-    <div class="showcase-preview text-center" ng-show="uploader.isHTML5">
+    <div class="showcase-preview text-center">
       <div class="btn-toolbar clearfix" style="margin-bottom: 20px;">
         <button class="btn btn-default" ng-click="changeDrawingShape('rectangle')">Prostokąt</button>
         <button class="btn btn-default" ng-click="changeDrawingShape('circle')">Koło</button>
         <button class="btn btn-default" ng-click="changeDrawingShape('polygon')">Wielokąt</button>
+        <span class="value">Szerokość: <strong>{{ showcase.type.width | pixels }}</strong></span>
+        <span class="value">Wysokość: <strong>{{ showcase.type.height | pixels }}</strong></span>
+        <span class="value">Rozmiar pliku: <strong>{{ uploader.queue[0].file.size/1024|number:2 }} KB</strong></span>
       </div>
       <div class="preview-container">
         <div class="canvas-container">
           <canvas class="preview"
-            showcase-preview="{file: uploader.queue[0].file}"
+            showcase-preview=""
             width="{{ showcase.type.width }}"
             height="{{ showcase.type.height }}"></canvas>
           <canvas class="area"
