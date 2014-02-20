@@ -40,7 +40,7 @@
       <button class="btn btn-success btn-block" ng-click="addShowcase()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
         <i class="glyphicon glyphicon-upload"></i>Zapisz
       </button>
-      <button class="btn btn-danger btn-block" ng-click="item.remove()">
+      <button class="btn btn-danger btn-block" ng-click="removeCurrentImage()">
         <i class="glyphicon glyphicon-trash"></i>Usuń
       </button>
     </div>
@@ -51,7 +51,7 @@
       </div>
       <div image-maps-editor="" ng-init="map = map || {}">
         <div class="showcase-preview text-center">
-          <div class="preview-container">
+          <div class="preview-container" ng-init="isPreviewImageLoaded = isPreviewImageLoaded || false">
             <div class="canvas-container">
               <canvas class="preview"
                 showcase-preview=""
@@ -69,7 +69,7 @@
             <canvas class="preview-transparent"
               width="{{ showcase.type.width }}"
               height="{{ showcase.type.height }}"
-              ng-class="{active: isDrawing}"
+              ng-class="{active: isDrawing, hidden: !isPreviewImageLoaded}"
               ng-click="startDrawingShape($event)"
               ng-mousemove="drawShape($event)"></canvas>
           </div>

@@ -37,6 +37,13 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
       {value: '308', label: 'Permanent Redirect'}
     ];
 
+    $scope.removeCurrentImage = function () {
+      uploader.queue.pop();
+      $scope.showcase = {};
+      $scope.map = [];
+      $scope.showcase.type = $scope.showcaseTypes[0];
+    };
+
     uploader.filters.push(function(item /*{File|HTMLInputElement}*/) {
       var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
       type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';

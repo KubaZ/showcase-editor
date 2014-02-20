@@ -19,6 +19,7 @@ angular.module('showcaseEditor.directives', [])
     return {
       restrict: 'A',
       link: function(scope, element, attrs) {
+        scope.isPreviewImageLoaded = false;
         var image;
         var canvas = element[0];
         var ctx = canvas.getContext('2d');
@@ -51,7 +52,10 @@ angular.module('showcaseEditor.directives', [])
 
           reader.onload = onLoadFile;
           reader.readAsDataURL(file);
+          scope.isPreviewImageLoaded = true;
         }
+
+
 
         scope.displayImageFromUrl = function () {
           var url = scope.showcase.image.url;
@@ -59,6 +63,7 @@ angular.module('showcaseEditor.directives', [])
             image = new Image();
             image.onload = drawImageToCanvas;
             image.src = url;
+            scope.isPreviewImageLoaded = true;
           }
         };
 
@@ -71,6 +76,10 @@ angular.module('showcaseEditor.directives', [])
         scope.$watch('uploader.queue[0]', function() {
           if (scope.uploader.queue[0]) {
             displayUploadedFile();
+          } else {
+            image = undefined;
+            canvas.width = canvas.width;
+            scope.isPreviewImageLoaded = false;
           }
         });
       }
