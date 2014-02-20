@@ -162,6 +162,14 @@ angular.module('imageMapEditor', [])
             return;
           }
         };
+
+        scope.removeArea = function (index) {
+          scope.map.areas.splice(index, 1);
+        };
+
+        scope.highlightArea = function (index) {
+          scope.map.areas[index].active = true;
+        };
       }
     };
   }])
@@ -210,11 +218,13 @@ angular.module('imageMapEditor', [])
           isMoving = true;
           startPoints[0] = x;
           startPoints[1] = y;
+          element.css('z-index', 105);
         };
 
         scope.stopShapeMove = function () {
           isMoving = false;
           scope.map.areas[attributes.index].shape = shape;
+          element.css('z-index', 102);
         };
 
         scope.selectShape = function () {
@@ -321,6 +331,20 @@ angular.module('imageMapEditor', [])
           if (newValue) {
             bringForward();
           }
+        }, true);
+
+        scope.$watch('area.active', function () {
+          element.toggleClass('active');
+        }, true);
+      }
+    };
+  })
+  .directive('areaProperties', function () {
+    return {
+      restrict: 'A',
+      link: function (scope, element) {
+        scope.$watch('area.active', function () {
+          element.toggleClass('active');
         }, true);
       }
     };

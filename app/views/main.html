@@ -65,8 +65,11 @@
                 ng-mousedown="startShapeMove($event)"
                 ng-mousemove="moveShape($event)"
                 ng-mouseup="stopShapeMove($event)"
+                ng-mouseenter="area.active = true"
+                ng-mouseleave="area.active = false"
+                ng-dblclick="removeArea($index)"
+                ng-class="{active: !area.active}"
                 data-index="{{$index}}"
-                ng-dblclick="removeArea($event)"
                 map-area></canvas>
             </div>
             <canvas class="preview-transparent"
@@ -77,36 +80,34 @@
               ng-mousemove="drawShape($event)"></canvas>
           </div>
         </div>
-        <section class="form-horizontal area-properties clearfix">
-          <div class="col-sm-6 col-lg-4" ng-repeat="area in map.areas">
-            <h4>Area properties:</h4>
+        <section class="area-properties-list clearfix">
+          <h4 ng-show="map.areas[0]">Area properties:</h4>
+          <div class="area-properties form-inline space-vertical-sm"
+            area-properties
+            ng-repeat="area in map.areas"
+            ng-mouseenter="area.active = true"
+            ng-mouseleave="area.active = false"
+            ng-class="{active: !area.active}">
             <div class="form-group">
-              <label for="" class="control-label col-sm-5 col-lg-5">URL: </label>
-              <div class="col-sm-6">
-                <input type="text" class="form-control input-sm" ng-model="area.url">
-              </div>
+              <label for="" class="control-label">URL: </label>
+              <input type="text" class="form-control input-sm" ng-model="area.url">
             </div>
             <div class="form-group">
-              <label for="" class="control-label col-sm-5 col-lg-5">Title: </label>
-              <div class="col-sm-6">
-                <input type="text" class="form-control input-sm" ng-model="area.title">
-              </div>
+              <label for="" class="control-label">Title: </label>
+              <input type="text" class="form-control input-sm" ng-model="area.title">
             </div>
             <div class="form-group">
-              <label for="" class="control-label col-sm-5 col-lg-5">Area coords: </label>
-              <div class="col-sm-6">
-                <input type="text" class="form-control input-sm" ng-model="area.shape" imagemap-display-coords>
-              </div>
+              <label for="" class="control-label">Target: </label>
+              <select class="form-control input-sm"
+                ng-init="area.target = area.target || linkTargets[0]"
+                ng-model="area.target"
+                ng-options="target.value for target in linkTargets"></select>
             </div>
             <div class="form-group">
-              <label for="" class="control-label col-sm-5 col-lg-5">Link behaviour: </label>
-              <div class="col-sm-6">
-                <select class="form-control input-sm"
-                  ng-init="area.target = area.target || linkTargets[0]"
-                  ng-model="area.target"
-                  ng-options="target.label for target in linkTargets"></select>
-              </div>
+              <label for="" class="control-label">Area coords: </label>
+              <input type="text" class="form-control input-sm" ng-model="area.shape" imagemap-display-coords>
             </div>
+            <button class="btn btn-danger" ng-click="removeArea($index)"><i class="glyphicon glyphicon-remove"></i></button>
           </div>
         </section>
       </div>

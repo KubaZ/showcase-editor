@@ -71,7 +71,7 @@ angular.module('showcaseEditor.directives', [])
           if (image) {
             drawImageToCanvas();
           }
-        });
+        }, true);
 
         scope.$watch('uploader.queue[0]', function() {
           if (scope.uploader.queue[0]) {

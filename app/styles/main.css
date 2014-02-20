@@ -84,6 +84,7 @@
 .showcase-preview {
   margin-bottom: 20px;
   position: relative;
+  overflow-x: auto;
 }
 
 .preview-container {
@@ -95,6 +96,14 @@
   position: absolute;
   background: transparent;
   z-index: 100;
+}
+
+.showcase-preview .area.active {
+  background: rgba(255,255,255,0.4);
+}
+
+.area-properties.active {
+  background: rgba(255,255,255,0.4);
 }
 
 .showcase-preview .area.complete {
@@ -212,8 +221,8 @@
   width: 60px;
 }
 
-.area-properties .control-label,
-.area-properties h4 {
+.area-properties-list .control-label,
+.area-properties-list h4 {
   color: #fff;
 }
 
