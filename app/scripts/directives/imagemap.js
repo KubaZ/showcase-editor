@@ -227,10 +227,6 @@ angular.module('imageMapEditor', [])
           element.css('z-index', 102);
         };
 
-        scope.selectShape = function () {
-          console.log('select shape');
-        };
-
         scope.removeArea = function () {
           isMoving = false;
           element.remove();
@@ -336,6 +332,17 @@ angular.module('imageMapEditor', [])
         scope.$watch('area.active', function () {
           element.toggleClass('active');
         }, true);
+      }
+    };
+  })
+  .directive('areaShape', function () {
+    return {
+      restrict: 'A',
+      link: function (scope, element) {
+        element.bind('click', function () {
+          element.siblings('button').removeClass('active');
+          element.addClass('active');
+        });
       }
     };
   })
