@@ -67,7 +67,7 @@ angular.module('showcaseEditor.directives', [])
           }
         };
 
-        scope.$watch('showcase.type', function() {
+        scope.$watch('showcase.dimensions', function() {
           if (image) {
             drawImageToCanvas();
           }

@@ -15,14 +15,7 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
       url: 'upload.php'
     });
 
-    // $scope.showcaseTypes = [
-    //   {size: 'big_layer', width: 700, height: 400},
-    //   {size: 'small_layer', width: 330, height: 400},
-    //   {size: 'big', width: 560, height: 540},
-    //   {size: 'small_top', width: 420, height: 220},
-    //   {size: 'small_bottom', width: 420, height: 300},
-    //   {size: 'full_width', width: 980, height: 360}
-    // ];
+    $scope.showcase = {dimensions: {width: 600, height: 400}};
 
     $scope.linkTargets = [
       {value: '_blank', label: 'Load in a new window'},
@@ -35,7 +28,6 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
       uploader.queue.pop();
       $scope.showcase = {};
       $scope.map = [];
-      //$scope.showcase.type = $scope.showcaseTypes[];
     };
 
     uploader.filters.push(function(item /*{File|HTMLInputElement}*/) {
@@ -46,45 +38,5 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
 
     uploader.filters.push(function() {
       return uploader.queue.length < 1;
-    });
-
-    uploader.bind('afteraddingfile', function (event, item) {
-      console.info('After adding a file', item);
-    });
-
-    uploader.bind('afteraddingall', function (event, items) {
-      console.info('After adding all files', items);
-    });
-
-    uploader.bind('beforeupload', function (event, item) {
-      console.info('Before upload', item);
-    });
-
-    uploader.bind('progress', function (event, item, progress) {
-      console.info('Progress: ' + progress, item);
-    });
-
-    uploader.bind('success', function (event, xhr, item, response) {
-      console.info('Success', xhr, item, response);
-    });
-
-    uploader.bind('cancel', function (event, xhr, item) {
-      console.info('Cancel', xhr, item);
-    });
-
-    uploader.bind('error', function (event, xhr, item, response) {
-      console.info('Error', xhr, item, response);
-    });
-
-    uploader.bind('complete', function (event, xhr, item, response) {
-      console.info('Complete', xhr, item, response);
-    });
-
-    uploader.bind('progressall', function (event, progress) {
-      console.info('Total progress: ' + progress);
-    });
-
-    uploader.bind('completeall', function (event, items) {
-      console.info('Complete all', items);
     });
   }]);
