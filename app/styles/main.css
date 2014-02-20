@@ -1,9 +1,3 @@
-/* Space out content a bit */
-body {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
@@ -73,7 +67,18 @@ body {
 }
 
 .my-drop-zone {
-  position: relative;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  width: 400px;
+  margin-left: -120px;
+  margin-top: -30px;
+  color: #999;
+}
+
+.my-drop-zone h2,
+.my-drop-zone h3 {
+  margin: 0;
 }
 
 .hidden-file-input {
@@ -122,4 +127,130 @@ body {
 .showcase-preview .area:hover {
   background: rgba(255,255,255,0.4);
   cursor: pointer;
+}
+
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+  display: none;
+}
+@media (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #f5f5f5;
+    border-right: 1px solid #eee;
+    width: 140px;
+  }
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.nav-sidebar > .active > a {
+  color: #fff;
+  background-color: #428bca;
+}
+
+
+/*
+ * Main content
+ */
+
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+.main .page-header {
+  margin-top: 0;
+}
+
+.preview-container canvas {
+  vertical-align: top;
+}
+
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+.placeholders {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.placeholders h4 {
+  margin-bottom: 0;
+}
+.placeholder {
+  margin-bottom: 20px;
+}
+.placeholder img {
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.main-editor {
+  padding: 20px;
+  position: relative;
+  min-height: 100%;
+  width: 100%;
+  background: url(../images/editor-bg.jpg) repeat 0 0;
+}
+
+@media (min-width: 768px) {
+  .main-editor {
+    position: absolute;
+    padding-left: 160px;
+  }
+}
+
+.navbar-form .control-label {
+  color: #999;
+}
+
+.navbar-form .form-group {
+  margin-right: 10px;
+}
+
+
+html, body {
+  height: 100%;
+}
+
+body {
+  padding-top: 50px;
+  padding-bottom: 0;
+}
+
+.sticky-wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  position: relative;
+  margin: 0 auto 0; /* the bottom margin is the negative value of the footer's height */
 }

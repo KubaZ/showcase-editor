@@ -1,153 +1,159 @@
-<section class="showcase-editor" ng-init="showcase = showcase || {}">
-  <h2>Edytor obszarów klikalnych</h2>
-  <form class="col-sm-8 col-sm-offset-2 form-horizontal">
-    <div class="form-group">
-      <label for="" class="control-label col-sm-3">Typ showcase'a:</label>
-      <div class="col-sm-9">
-        <select class="form-control"
-          ng-model="showcase.type"
-          ng-init="showcase.type = showcase.type || showcaseTypes[0]"
-          ng-options="type.size for type in showcaseTypes"></select>
-      </div>
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">ImageMap Editor</a>
     </div>
-    <div class="form-group">
-      <label class="control-label col-sm-3">Url zdjęcia: </label>
-      <div class="col-sm-9">
-        <input type="url" class="form-control" ng-change="displayImageFromUrl()" ng-model="showcase.image.url">
-      </div>
+    <div class="navbar-collapse collapse">
+      <form class="navbar-form navbar-right">
+        <div class="form-group">
+          <label for="" class="control-label">Typ showcase'a:</label>
+          <select class="form-control"
+            ng-model="showcase.type"
+            ng-init="showcase.type = showcase.type || showcaseTypes[0]"
+            ng-options="type.size for type in showcaseTypes"></select>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Url zdjęcia: </label>
+          <input type="url" class="form-control" ng-change="displayImageFromUrl()" ng-model="showcase.image.url">
+        </div>
+      </form>
     </div>
-  </form>
-  <div class="drop-zone-container clearfix" trigger-file-input="">
-    <div class="col-sm-offset-2 col-sm-8 well my-drop-zone trigger" ng-file-drop="">
-      <h3 class="text-center"><i class="glyphicon glyphicon-upload"></i>Przeciągnij tu obrazek albo kliknij.</h3>
-    </div>
-    <input type="file" class="hidden-file-input" ng-file-select="" ng-model="showcase.file">
   </div>
-  <div class="form-horizontal">
-  </div>
-  <div image-maps-editor="" ng-init="map = map || {}">
-    <div class="showcase-preview text-center">
-      <div class="btn-toolbar clearfix" style="margin-bottom: 20px;">
-        <button class="btn btn-default" ng-click="changeDrawingShape('rectangle')">Prostokąt</button>
-        <button class="btn btn-default" ng-click="changeDrawingShape('circle')">Koło</button>
-        <button class="btn btn-default" ng-click="changeDrawingShape('polygon')">Wielokąt</button>
-        <span class="value">Szerokość: <strong>{{ showcase.type.width | pixels }}</strong></span>
-        <span class="value">Wysokość: <strong>{{ showcase.type.height | pixels }}</strong></span>
-        <span class="value">Rozmiar pliku: <strong>{{ uploader.queue[0].file.size/1024|number:2 }} KB</strong></span>
-      </div>
-      <div class="preview-container">
-        <div class="canvas-container">
-          <canvas class="preview"
-            showcase-preview=""
-            width="{{ showcase.type.width }}"
-            height="{{ showcase.type.height }}"></canvas>
-          <canvas class="area"
-            ng-repeat="area in map.areas"
-            ng-click="selectShape($event)"
-            ng-mousedown="startShapeMove($event)"
-            ng-mousemove="moveShape($event)"
-            ng-mouseup="stopShapeMove($event)"
-            data-index="{{$index}}"
-            ng-dblclick="removeArea($event)"
-            map-area></canvas>
-        </div>
-        <canvas class="preview-transparent"
-          width="{{ showcase.type.width }}"
-          height="{{ showcase.type.height }}"
-          ng-class="{active: isDrawing}"
-          ng-click="startDrawingShape($event)"
-          ng-mousemove="drawShape($event)"></canvas>
-      </div>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="sidebar editor-toolbar">
+      <button class="btn btn-default btn-block" ng-click="changeDrawingShape('rectangle')">Prostokąt</button>
+      <button class="btn btn-default btn-block" ng-click="changeDrawingShape('circle')">Koło</button>
+      <button class="btn btn-default btn-block" ng-click="changeDrawingShape('polygon')">Wielokąt</button>
+      <p class="value" style="margin-top: 10px;">Szerokość: <strong>{{ showcase.type.width | pixels }}</strong></p>
+      <p class="value">Wysokość: <strong>{{ showcase.type.height | pixels }}</strong></p>
+      <p class="value">Rozmiar pliku: <strong>{{ uploader.queue[0].file.size/1024|number:2 }} KB</strong></p>
+      <button class="btn btn-success btn-block" ng-click="addShowcase()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+        <i class="glyphicon glyphicon-upload"></i>Zapisz
+      </button>
+      <button class="btn btn-danger btn-block" ng-click="item.remove()">
+        <i class="glyphicon glyphicon-trash"></i>Usuń
+      </button>
     </div>
-    <section class="form-horizontal global-properties clearfix">
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="" class="control-label col-sm-3">Nazwa: </label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" ng-model="showcase.name">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="" class="control-label col-sm-3">Kolejność: </label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" ng-model="showcase.priority">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="" class="control-label col-sm-3">Aktywność: </label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" ng-model="showcase.isActive">
-          </div>
-        </div>
+    <div class="main-editor" ng-init="showcase = showcase || {}" ng-file-drop="">
+      <div class="my-drop-zone trigger text-center">
+        <h2 class="glyphicon glyphicon-upload"></h2>
+        <h3>Upuść tutaj plik z obrazkiem</h3>
+        <input type="file" class="hidden-file-input" ng-file-select="" ng-model="showcase.file">
       </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="" class="control-label col-sm-3">Komercyjny: </label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" ng-model="showcase.isCommercial">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="" class="control-label col-sm-3">Failsafe: </label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" ng-model="showcase.failsafe">
-          </div>
-        </div>
-      </div>
-    </section>
-    <section ng-repeat="area in map.areas" class="form-horizontal area-properties clearfix">
-      <h4>Właściwości obszaru:</h4>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="" class="control-label col-sm-3">Url: </label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" ng-model="area.url">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="" class="control-label col-sm-3">Tytuł: </label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" ng-model="area.title">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="" class="control-label col-sm-3">Obszar: </label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" ng-model="area.shape" imagemap-display-coords>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="" class="control-label col-sm-3">Sposób otwierania linku: </label>
-          <div class="col-sm-8">
-            <select class="form-control"
-              ng-init="area.target = area.target || linkTargets[0]"
-              ng-model="area.target"
-              ng-options="target.label for target in linkTargets"></select>
-          </div>
-        </div>
-        <div class="form-group">
-            <label for="" class="control-label col-sm-3">Kod przekierowania: </label>
-            <div class="col-sm-8">
-              <select class="form-control"
-                ng-init="area.redirectCode = area.redirectCode || redirectCodes[0]"
-                ng-model="area.redirectCode"
-                ng-options="code.label for code in redirectCodes"></select>
+      <div image-maps-editor="" ng-init="map = map || {}">
+        <div class="showcase-preview text-center">
+          <div class="preview-container">
+            <div class="canvas-container">
+              <canvas class="preview"
+                showcase-preview=""
+                width="{{ showcase.type.width }}"
+                height="{{ showcase.type.height }}"></canvas>
+              <canvas class="area"
+                ng-repeat="area in map.areas"
+                ng-mousedown="startShapeMove($event)"
+                ng-mousemove="moveShape($event)"
+                ng-mouseup="stopShapeMove($event)"
+                data-index="{{$index}}"
+                ng-dblclick="removeArea($event)"
+                map-area></canvas>
             </div>
+            <canvas class="preview-transparent"
+              width="{{ showcase.type.width }}"
+              height="{{ showcase.type.height }}"
+              ng-class="{active: isDrawing}"
+              ng-click="startDrawingShape($event)"
+              ng-mousemove="drawShape($event)"></canvas>
+          </div>
         </div>
+        <section class="form-horizontal global-properties clearfix">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="" class="control-label col-sm-3">Nazwa: </label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" ng-model="showcase.name">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="" class="control-label col-sm-3">Kolejność: </label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" ng-model="showcase.priority">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="" class="control-label col-sm-3">Aktywność: </label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" ng-model="showcase.isActive">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="" class="control-label col-sm-3">Komercyjny: </label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" ng-model="showcase.isCommercial">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="" class="control-label col-sm-3">Failsafe: </label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" ng-model="showcase.failsafe">
+              </div>
+            </div>
+          </div>
+        </section>
+        <section ng-repeat="area in map.areas" class="form-horizontal area-properties clearfix">
+          <h4>Właściwości obszaru:</h4>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="" class="control-label col-sm-3">Url: </label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" ng-model="area.url">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="" class="control-label col-sm-3">Tytuł: </label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" ng-model="area.title">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="" class="control-label col-sm-3">Obszar: </label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" ng-model="area.shape" imagemap-display-coords>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="" class="control-label col-sm-3">Sposób otwierania linku: </label>
+              <div class="col-sm-8">
+                <select class="form-control"
+                  ng-init="area.target = area.target || linkTargets[0]"
+                  ng-model="area.target"
+                  ng-options="target.label for target in linkTargets"></select>
+              </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label col-sm-3">Kod przekierowania: </label>
+                <div class="col-sm-8">
+                  <select class="form-control"
+                    ng-init="area.redirectCode = area.redirectCode || redirectCodes[0]"
+                    ng-model="area.redirectCode"
+                    ng-options="code.label for code in redirectCodes"></select>
+                </div>
+            </div>
+          </div>
+        </section>
+        <!-- <div ng-show="uploader.isHTML5" class="progress" style="margin-bottom: 0;">
+            <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+          </div> -->
       </div>
-    </section><!--
-    <div ng-show="uploader.isHTML5" class="progress" style="margin-bottom: 0;">
-      <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-    </div> -->
-    <div class="btn-toolbar pull-right" nowrap>
-        <button type="button" class="btn btn-success btn-sm" ng-click="addShowcase()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
-            <i class="glyphicon glyphicon-upload"></i>Zapisz
-        </button>
-        <button type="button" class="btn btn-danger btn-sm" ng-click="item.remove()">
-            <i class="glyphicon glyphicon-trash"></i>Usuń
-        </button>
     </div>
   </div>
-</section>
+</div>

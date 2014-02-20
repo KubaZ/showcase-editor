@@ -31,24 +31,24 @@ angular.module('showcaseEditor.directives', [])
           if (!helper.support) {
             return;
           }
-  
+
           var file = scope.uploader.queue[0].file;
-  
+
           if (!helper.isFile(file)) {
             return;
           }
           if (!helper.isImage(file)) {
             return;
           }
-  
+
           var reader = new FileReader();
-  
+
           function onLoadFile(event) {
             image = new Image();
             image.onload = drawImageToCanvas;
             image.src = event.target.result;
           }
-  
+
           reader.onload = onLoadFile;
           reader.readAsDataURL(file);
         }
@@ -80,7 +80,7 @@ angular.module('showcaseEditor.directives', [])
     return {
       restrict: 'A',
       link: function (scope, element) {
-        element.find('.trigger').bind('click', function () {
+        element.bind('click', function () {
           element.find('input').focus().trigger('click');
         });
       }
