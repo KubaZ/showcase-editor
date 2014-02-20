@@ -26,8 +26,9 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
 
     $scope.removeCurrentImage = function () {
       uploader.queue.pop();
-      $scope.showcase = {};
-      $scope.map = [];
+      $scope.showcase = {dimensions: {width: 600, height: 400}};
+      $scope.map = {};
+      $scope.map.areas = [];
     };
 
     uploader.filters.push(function(item /*{File|HTMLInputElement}*/) {
