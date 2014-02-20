@@ -1,11 +1,6 @@
 'use strict';
 
-var editorControllers = angular.module('showcaseEditor.controllers',
-  [
-    'angularFileUpload',
-    'imageMapEditor'
-  ]
-);
+var editorControllers = angular.module('showcaseEditor.controllers', ['angularFileUpload']);
 
 editorControllers.controller('MainController', ['$scope', '$fileUploader',
   function ($scope, $fileUploader) {
@@ -34,7 +29,6 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
     ];
 
     $scope.submitShowcase = function () {
-
       console.log($scope.showcase);
     };
 
@@ -47,8 +41,6 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
     uploader.filters.push(function() {
       return uploader.queue.length < 1;
     });
-
-    // REGISTER HANDLERS
 
     uploader.bind('afteraddingfile', function (event, item) {
       console.info('After adding a file', item);
