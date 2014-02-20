@@ -6,6 +6,7 @@ angular.module('imageMapEditor', [])
       link: function (scope) {
         scope.isDrawing = false;
         scope.shiftKey = false;
+        scope.startDrawingPolygon = false;
         var isRectangle = true, isCircle, isPolygon;
         var newArea = scope.map.areas ? scope.map.areas.length : 0;
         var currentShape, currentShapeType = 'rectangle';
@@ -119,7 +120,8 @@ angular.module('imageMapEditor', [])
             }
 
             if (isPolygon) {
-              return currentShape.coords.push([x,y]);
+              scope.startDrawingPolygon = true;
+              return currentShape.coords.push([x,y], [x,y]);
             }
           }
 
@@ -130,12 +132,12 @@ angular.module('imageMapEditor', [])
           }
 
           if (isPolygon) {
-            currentShape.coords.push([x,y]);
             if (scope.shiftKey) {
               scope.isDrawing = false;
               currentShape.complete = true;
               return;
             }
+            currentShape.coords.push([x,y]);
           }
         };
 
@@ -150,6 +152,12 @@ angular.module('imageMapEditor', [])
 
             if (isCircle) {
               setCircleCoords(x, y);
+            }
+
+            if (isPolygon) {
+              var i = currentShape.coords.length - 1;
+              currentShape.coords[i][0] = x;
+              currentShape.coords[i][1] = y;
             }
             return;
           }
@@ -171,16 +179,23 @@ angular.module('imageMapEditor', [])
           if (isMoving) {
             var x = event.offsetX ? event.offsetX : event.originalEvent.layerX;
             var y = event.offsetY ? event.offsetY : event.originalEvent.layerY;
+            var xVector = x - startPoints[0];
+            var yVector = y - startPoints[1];
             if (shape.type === 'rectangle') {
-              shape.coords[0]+= x - startPoints[0];
-              shape.coords[1]+= y - startPoints[1];
-              shape.coords[2]+= x - startPoints[0];
-              shape.coords[3]+= y - startPoints[1];
+              shape.coords[0]+= xVector;
+              shape.coords[1]+= yVector;
+              shape.coords[2]+= xVector;
+              shape.coords[3]+= yVector;
             }
 
             if (shape.type === 'circle') {
-              shape.coords[0]+= x - startPoints[0];
-              shape.coords[1]+= y - startPoints[1];
+              shape.coords[0]+= xVector;
+              shape.coords[1]+= yVector;
+            }
+
+            if (shape.type === 'polygon') {
+              updatePolygonCoords(xVector, yVector);
+              return;
             }
 
             styles.left = shape.coords[0];
@@ -231,19 +246,38 @@ angular.module('imageMapEditor', [])
         }
 
         function drawPolygon() {
-          styles.left = 0;
-          styles.top = 0;
+          var i;
+          var xCoords = [], yCoords = [];
+          for (i = 0; i < shape.coords.length; i++) {
+            xCoords.push(shape.coords[i][0]);
+            yCoords.push(shape.coords[i][1]);
+          }
+          shape.left = Math.min.apply(Math, xCoords);
+          shape.top = Math.min.apply(Math, yCoords);
+          var xMaxPosition = Math.max.apply(Math, xCoords);
+          var yMaxPosition = Math.max.apply(Math, yCoords);
+
+          styles.left = shape.left;
+          styles.top = shape.top;
           element.css(styles);
-          element[0].width = 700;
-          element[0].height = 400;
+          element[0].width = xMaxPosition - shape.left;
+          element[0].height = yMaxPosition - shape.top;
 
           ctx.beginPath();
-          ctx.moveTo(shape.coords[0][0], shape.coords[0][1]);
-          for (var i = 0; i < shape.coords.length; i++) {
-            ctx.lineTo(shape.coords[i][0], shape.coords[i][1]);
+          ctx.moveTo(shape.coords[0][0] - shape.left, shape.coords[0][1] - shape.top);
+          for (i = 0; i < shape.coords.length; i++) {
+            ctx.lineTo(shape.coords[i][0] - shape.left, shape.coords[i][1] - shape.top);
           }
           ctx.closePath();
           fillShape();
+        }
+
+        function updatePolygonCoords (xVector, yVector) {
+          var i;
+          for (i = 0; i < shape.coords.length; i++) {
+            shape.coords[i][0]+= xVector;
+            shape.coords[i][1]+= yVector;
+          }
         }
 
         function drawCircle() {
