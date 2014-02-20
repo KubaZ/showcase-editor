@@ -15,14 +15,14 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
       url: 'upload.php'
     });
 
-    $scope.showcaseTypes = [
-      {size: 'big_layer', width: 700, height: 400},
-      {size: 'small_layer', width: 330, height: 400},
-      {size: 'big', width: 560, height: 540},
-      {size: 'small_top', width: 420, height: 220},
-      {size: 'small_bottom', width: 420, height: 300},
-      {size: 'full_width', width: 980, height: 360}
-    ];
+    // $scope.showcaseTypes = [
+    //   {size: 'big_layer', width: 700, height: 400},
+    //   {size: 'small_layer', width: 330, height: 400},
+    //   {size: 'big', width: 560, height: 540},
+    //   {size: 'small_top', width: 420, height: 220},
+    //   {size: 'small_bottom', width: 420, height: 300},
+    //   {size: 'full_width', width: 980, height: 360}
+    // ];
 
     $scope.linkTargets = [
       {value: '_blank', label: 'Load in a new window'},
@@ -31,17 +31,11 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
       {value: '_top', label: 'Load in the full body of the window'}
     ];
 
-    $scope.redirectCodes = [
-      {value: '302', label: 'Found'},
-      {value: '304', label: 'Not Modified'},
-      {value: '308', label: 'Permanent Redirect'}
-    ];
-
     $scope.removeCurrentImage = function () {
       uploader.queue.pop();
       $scope.showcase = {};
       $scope.map = [];
-      $scope.showcase.type = $scope.showcaseTypes[0];
+      //$scope.showcase.type = $scope.showcaseTypes[];
     };
 
     uploader.filters.push(function(item /*{File|HTMLInputElement}*/) {

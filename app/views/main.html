@@ -12,11 +12,8 @@
     <div class="navbar-collapse collapse">
       <form class="navbar-form navbar-right">
         <div class="form-group">
-          <label for="" class="control-label">Typ showcase'a:</label>
-          <select class="form-control"
-            ng-model="showcase.type"
-            ng-init="showcase.type = showcase.type || showcaseTypes[0]"
-            ng-options="type.size for type in showcaseTypes"></select>
+          <label for="" class="control-label">Nazwa: </label>
+          <input type="text" class="form-control" ng-model="showcase.name">
         </div>
         <div class="form-group">
           <label class="control-label">Url zdjęcia: </label>
@@ -34,8 +31,8 @@
       <button class="btn btn-default btn-block" ng-click="changeDrawingShape('rectangle')">Prostokąt</button>
       <button class="btn btn-default btn-block" ng-click="changeDrawingShape('circle')">Koło</button>
       <button class="btn btn-default btn-block" ng-click="changeDrawingShape('polygon')">Wielokąt</button>
-      <p class="value" style="margin-top: 10px;">Szerokość: <strong>{{ showcase.type.width | pixels }}</strong></p>
-      <p class="value">Wysokość: <strong>{{ showcase.type.height | pixels }}</strong></p>
+      <p class="value" style="margin-top: 10px;">Szerokość: <strong>{{ showcase.width | pixels }}</strong></p>
+      <p class="value">Wysokość: <strong>{{ showcase.height | pixels }}</strong></p>
       <p class="value">Rozmiar pliku: <strong>{{ uploader.queue[0].file.size/1024|number:2 }} KB</strong></p>
       <button class="btn btn-success btn-block" ng-click="addShowcase()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
         <i class="glyphicon glyphicon-upload"></i>Zapisz
@@ -74,40 +71,6 @@
               ng-mousemove="drawShape($event)"></canvas>
           </div>
         </div>
-        <section class="form-horizontal global-properties clearfix">
-          <div class="col-sm-6">
-            <div class="form-group">
-              <label for="" class="control-label col-sm-3">Nazwa: </label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" ng-model="showcase.name">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="" class="control-label col-sm-3">Kolejność: </label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" ng-model="showcase.priority">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="" class="control-label col-sm-3">Aktywność: </label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" ng-model="showcase.isActive">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="" class="control-label col-sm-3">Komercyjny: </label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" ng-model="showcase.isCommercial">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="" class="control-label col-sm-3">Failsafe: </label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" ng-model="showcase.failsafe">
-              </div>
-            </div>
-          </div>
-        </section>
         <section ng-repeat="area in map.areas" class="form-horizontal area-properties clearfix">
           <h4>Właściwości obszaru:</h4>
           <div class="col-sm-6">
