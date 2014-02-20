@@ -22,6 +22,8 @@
           <label class="control-label">Url zdjęcia: </label>
           <input type="url" class="form-control" ng-change="displayImageFromUrl()" ng-model="showcase.image.url">
         </div>
+        <button class="btn btn-default" trigger-file-input>Załaduj zdjęcie</button>
+        <input type="file" class="hidden-file-input" ng-file-select="" ng-model="showcase.file">
       </form>
     </div>
   </div>
@@ -46,7 +48,6 @@
       <div class="my-drop-zone trigger text-center">
         <h2 class="glyphicon glyphicon-upload"></h2>
         <h3>Upuść tutaj plik z obrazkiem</h3>
-        <input type="file" class="hidden-file-input" ng-file-select="" ng-model="showcase.file">
       </div>
       <div image-maps-editor="" ng-init="map = map || {}">
         <div class="showcase-preview text-center">

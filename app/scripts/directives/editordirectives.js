@@ -81,7 +81,7 @@ angular.module('showcaseEditor.directives', [])
       restrict: 'A',
       link: function (scope, element) {
         element.bind('click', function () {
-          element.find('input').focus().trigger('click');
+          element.next('input').focus().trigger('click');
         });
       }
     };
