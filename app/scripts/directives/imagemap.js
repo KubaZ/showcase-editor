@@ -15,13 +15,13 @@ angular.module('imageMapEditor', [])
           scope.map.areas = [];
         }
 
-        $document.keydown(function (event) {
+        $document.on('keydown', function (event) {
           if (event.shiftKey) {
             scope.shiftKey = true;
           }
         });
 
-        $document.keyup(function () {
+        $document.on('keyup', function () {
           scope.shiftKey = false;
         });
 
@@ -147,11 +147,11 @@ angular.module('imageMapEditor', [])
             var y = event.offsetY ? event.offsetY : event.originalEvent.layerY;
 
             if (isRectangle) {
-              setRectangleCoords(x, y);
+              return setRectangleCoords(x, y);
             }
 
             if (isCircle) {
-              setCircleCoords(x, y);
+              return setCircleCoords(x, y);
             }
 
             if (isPolygon) {
@@ -275,7 +275,7 @@ angular.module('imageMapEditor', [])
 
             styles.left = shape.coords[0];
             styles.top = shape.coords[1];
-            element.css(styles);
+            angular.element(element).css(styles);
           }
         };
 
@@ -285,13 +285,13 @@ angular.module('imageMapEditor', [])
           isMoving = true;
           startPoints[0] = x;
           startPoints[1] = y;
-          element.css('z-index', 105);
+          angular.element(element).css('z-index', 105);
         };
 
         scope.stopShapeMove = function () {
           isMoving = false;
           scope.map.areas[attributes.index].shape = shape;
-          element.css('z-index', 102);
+          angular.element(element).css('z-index', 102);
         };
 
         scope.removeArea = function () {
@@ -310,7 +310,7 @@ angular.module('imageMapEditor', [])
         function drawRectangle() {
           styles.left = shape.coords[0];
           styles.top = shape.coords[1];
-          element.css(styles);
+          angular.element(element).css(styles);
           element[0].width = shape.coords[2] - shape.coords[0];
           element[0].height = shape.coords[3] - shape.coords[1];
 
@@ -332,7 +332,7 @@ angular.module('imageMapEditor', [])
 
           styles.left = shape.left;
           styles.top = shape.top;
-          element.css(styles);
+          angular.element(element).css(styles);
           element[0].width = xMaxPosition - shape.left;
           element[0].height = yMaxPosition - shape.top;
 
@@ -358,7 +358,7 @@ angular.module('imageMapEditor', [])
           styles.top = shape.coords[1];
           var radius = shape.coords[2];
 
-          element.css(styles);
+          angular.element(element).css(styles);
           element[0].width = radius * 2;
           element[0].height = radius * 2;
 
@@ -407,8 +407,8 @@ angular.module('imageMapEditor', [])
       restrict: 'A',
       link: function (scope, element) {
         element.bind('click', function () {
-          element.siblings('button').removeClass('active');
-          element.addClass('active');
+          angular.element(element).siblings('button').removeClass('active');
+          angular.element(element).addClass('active');
         });
       }
     };
@@ -418,7 +418,7 @@ angular.module('imageMapEditor', [])
       restrict: 'A',
       link: function (scope, element) {
         scope.$watch('area.active', function () {
-          element.toggleClass('active');
+          angular.element(element).toggleClass('active');
         }, true);
       }
     };
@@ -428,7 +428,7 @@ angular.module('imageMapEditor', [])
       restrict: 'A',
       link: function (scope, element) {
         scope.$watch('area.shape', function (newValue) {
-          element.val(newValue.coords);
+          angular.element(element).val(newValue.coords);
         }, true);
       }
     };

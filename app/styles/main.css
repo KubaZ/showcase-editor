@@ -192,7 +192,7 @@
   min-height: 100%;
   width: 100%;
   padding: 10px 10px 10px 70px;
-  background: url(../images/editor-bg.jpg) repeat 0 0;
+  background: url(/images/editor-bg.jpg) repeat 0 0;
 }
 
 .my-drop-zone {
