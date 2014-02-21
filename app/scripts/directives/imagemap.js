@@ -182,6 +182,64 @@ angular.module('imageMapEditor', [])
         var ctx = element[0].getContext('2d');
         var isMoving = false;
         var startPoints = [];
+        var boundriesReached = false;
+        var yMax = scope.showcase.dimensions.height;
+        var xMax = scope.showcase.dimensions.width;
+
+        function checkBoundries (boundries) {
+          if (boundries[0] < 0 || boundries[2] > xMax) {
+            boundriesReached = true;
+            return;
+          }
+
+          if (boundries[1] < 0 || boundries[3] > yMax) {
+            boundriesReached = true;
+            return;
+          }
+
+          boundriesReached = false;
+        }
+
+        function getPolygonBoundries (xVector, yVector) {
+          var i;
+          var xCoords = [], yCoords = [], boundries = [];
+
+          for (i = 0; i < shape.coords.length; i++) {
+            xCoords.push(shape.coords[i][0]);
+            yCoords.push(shape.coords[i][1]);
+          }
+
+          boundries.push(Math.min.apply(Math, xCoords) + xVector);
+          boundries.push(Math.min.apply(Math, yCoords) + yVector);
+          boundries.push(Math.max.apply(Math, xCoords) + xVector);
+          boundries.push(Math.max.apply(Math, yCoords) + yVector);
+
+          checkBoundries(boundries);
+        }
+
+        function getRectangleBoundries (xVector, yVector) {
+          var boundries = [];
+          boundries.push(shape.coords[0]+ xVector);
+          boundries.push(shape.coords[1]+ yVector);
+          boundries.push(shape.coords[2]+ xVector);
+          boundries.push(shape.coords[3]+ yVector);
+
+          checkBoundries(boundries);
+        }
+
+        function getCircleBoundries (xVector, yVector) {
+          var boundries = [];
+          var xBoundry = shape.coords[0]+ xVector;
+          var yBoundry = shape.coords[1]+ yVector;
+          var diameter = shape.coords[2] * 2;
+
+          boundries.push(xBoundry);
+          boundries.push(yBoundry);
+          boundries.push(xBoundry + diameter);
+          boundries.push(yBoundry + diameter);
+
+          checkBoundries(boundries);
+        }
 
         scope.moveShape = function (event) {
           if (isMoving) {
@@ -190,19 +248,28 @@ angular.module('imageMapEditor', [])
             var xVector = x - startPoints[0];
             var yVector = y - startPoints[1];
             if (shape.type === 'rectangle') {
-              shape.coords[0]+= xVector;
-              shape.coords[1]+= yVector;
-              shape.coords[2]+= xVector;
-              shape.coords[3]+= yVector;
+              getRectangleBoundries(xVector, yVector);
+              if (!boundriesReached) {
+                shape.coords[0]+= xVector;
+                shape.coords[1]+= yVector;
+                shape.coords[2]+= xVector;
+                shape.coords[3]+= yVector;
+              }
             }
 
             if (shape.type === 'circle') {
-              shape.coords[0]+= xVector;
-              shape.coords[1]+= yVector;
+              getCircleBoundries(xVector, yVector);
+              if (!boundriesReached) {
+                shape.coords[0]+= xVector;
+                shape.coords[1]+= yVector;
+              }
             }
 
             if (shape.type === 'polygon') {
-              updatePolygonCoords(xVector, yVector);
+              getPolygonBoundries(xVector, yVector);
+              if (!boundriesReached) {
+                updatePolygonCoords(xVector, yVector);
+              }
               return;
             }
 
