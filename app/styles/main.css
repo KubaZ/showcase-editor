@@ -106,7 +106,7 @@
 }
 
 .area-properties.active {
-  background: rgba(255,255,255,0.4);
+  background: #777;
 }
 
 .showcase-preview .area.complete {
@@ -315,4 +315,8 @@ body {
 
 .dropdown-form .form-group {
   padding-top: 10px;
+}
+
+.well-inverse {
+  background: #3C3C3C;
 }
