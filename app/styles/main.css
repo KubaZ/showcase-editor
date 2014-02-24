@@ -153,12 +153,6 @@
  * Main content
  */
 
-@media (min-width: 768px) {
-  .main {
-    padding-right: 40px;
-    padding-left: 40px;
-  }
-}
 .main .page-header {
   margin-top: 0;
 }
@@ -226,6 +220,10 @@
   color: #fff;
 }
 
+.editor-toolbar button span {
+  display: none;
+}
+
 @media screen and (min-width: 768px) {
   .my-drop-zone {
     position: absolute;
@@ -245,6 +243,15 @@
   .sidebar {
     padding: 20px;
     width: 140px;
+  }
+
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+
+  .editor-toolbar button span {
+    display: inline-block;
   }
 }
 

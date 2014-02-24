@@ -12,10 +12,6 @@
     <div class="navbar-collapse collapse">
       <form class="navbar-form navbar-right">
         <div class="form-group">
-          <label for="" class="control-label">Name: </label>
-          <input type="text" class="form-control input-sm" ng-model="showcase.name">
-        </div>
-        <div class="form-group">
           <label class="control-label">Image URL: </label>
           <input type="url" class="form-control input-sm" ng-change="displayImageFromUrl()" ng-model="showcase.image.url">
         </div>
@@ -40,16 +36,24 @@
       <div class="space-vertical-sm">
         <label class="control-label" style="margin-top: 10px;">Width:</label>
         <input class="form-control input-sm" type="number" ng-model="showcase.dimensions.width" />
+      </div>
+      <div class="space-vertical-sm">
         <label class="control-label">Height:</label>
         <input class="form-control input-sm" type="number" ng-model="showcase.dimensions.height" />
+      </div>
+      <div class="space-vertical-sm">
+        <label for="scale" class="control-label">Scale: {{showcase.dimensions.scale}}</label>
+        <input class="form-control input-sm" type="range" name="points" min="0.1" max="2" step="0.1" ng-model="showcase.dimensions.scale">
       </div>
       <p class="value" ng-show="uploader.queue[0]">File size: <strong>{{ uploader.queue[0].file.size/1024|number:2 }} KB</strong></p>
       <div class="space-vertical-sm">
         <button class="btn btn-success btn-block" ng-click="addShowcase()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
-          <i class="glyphicon glyphicon-upload"></i>Save
+          <i class="glyphicon glyphicon-upload"></i>
+          <span>Save</span>
         </button>
         <button class="btn btn-danger btn-block" ng-click="removeCurrentImage()">
-          <i class="glyphicon glyphicon-trash"></i>Remove
+          <i class="glyphicon glyphicon-trash"></i>
+          <span>Remove</span>
         </button>
       </div>
     </div>
