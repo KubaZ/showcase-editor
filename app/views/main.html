@@ -13,19 +13,22 @@
       <ul class="nav navbar-nav">
         <li class="dropdown">
           <a class="dropdown-toggle" dropdown-toggle>Image properties <b class="caret"></b></a>
-          <div class="dropdown-menu dropdown-form">
+          <div class="dropdown-menu dropdown-form navbar-form">
             <div class="form-group">
               <label for="" class="control-label">Name: </label>
               <input type="text" class="form-control input-sm" ng-model="showcase.name">
             </div>
             <div class="form-group">
+              <label for="" class="control-label">Type: <input type="checkbox" class="form-control input-sm" ng-model="showcase.commercial"></label>
+            </div>
+            <div class="form-group">
               <label for="" class="control-label">Order: </label>
               <input type="text" class="form-control input-sm" ng-model="showcase.order">
             </div>
-            <div class="form-group-inline">
+            <div class="form-group">
               <label for="" class="control-label">Active: <input type="checkbox" class="form-control input-sm" ng-model="showcase.activity"></label>
             </div>
-            <div class="form-group-inline">
+            <div class="form-group">
               <label for="" class="control-label">Commercial: <input type="checkbox" class="form-control input-sm" ng-model="showcase.commercial"></label>
             </div>
           </div>

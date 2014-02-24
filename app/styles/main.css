@@ -310,4 +310,9 @@ body {
 
 .dropdown-menu.dropdown-form {
   width: 300px;
+  background: #080808;
+}
+
+.dropdown-form .form-group {
+  padding-top: 10px;
 }
