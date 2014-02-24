@@ -277,3 +277,23 @@ body {
 .space-vertical-sm {
   padding: 10px 0;
 }
+
+.editor-glyphicon {
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  vertical-align: top;
+  background: url(/images/shapes-sprite.png) no-repeat;
+}
+
+.editor-glyphicon-rectangle {
+  background-position: -60px 0;
+}
+
+.editor-glyphicon-circle {
+  background-position: 0 0;
+}
+
+.editor-glyphicon-polygon {
+  background-position: -30px 0;
+}

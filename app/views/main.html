@@ -28,9 +28,15 @@
 <div class="container-fluid">
   <div class="row">
     <div class="sidebar editor-toolbar">
-      <button class="btn btn-default btn-block" area-shape ng-click="changeDrawingShape('rectangle')">Rectangle</button>
-      <button class="btn btn-default btn-block" area-shape ng-click="changeDrawingShape('circle')">Circle</button>
-      <button class="btn btn-default btn-block" area-shape ng-click="changeDrawingShape('polygon')">Polygon</button>
+      <button class="btn btn-default btn-block" area-shape ng-click="changeDrawingShape('rectangle')">
+        <i class="editor-glyphicon editor-glyphicon-rectangle"></i>
+      </button>
+      <button class="btn btn-default btn-block" area-shape ng-click="changeDrawingShape('circle')">
+        <i class="editor-glyphicon editor-glyphicon-circle"></i>
+      </button>
+      <button class="btn btn-default btn-block" area-shape ng-click="changeDrawingShape('polygon')">
+        <i class="editor-glyphicon editor-glyphicon-polygon"></i>
+      </button>
       <div class="space-vertical-sm">
         <label class="control-label" style="margin-top: 10px;">Width:</label>
         <input class="form-control input-sm" type="number" ng-model="showcase.dimensions.width" />
