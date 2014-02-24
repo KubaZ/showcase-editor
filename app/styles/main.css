@@ -307,3 +307,7 @@ body {
 .editor-glyphicon-polygon {
   background-position: -30px 0;
 }
+
+.dropdown-menu.dropdown-form {
+  width: 300px;
+}

@@ -102,4 +102,14 @@ angular.module('showcaseEditor.directives', [])
         });
       }
     };
+  })
+  .directive('dropdownToggle', function () {
+    return {
+      restrict: 'A',
+      link: function (scope, element) {
+        angular.element(element).bind('click', function () {
+          angular.element(element).parent().toggleClass('open');
+        });
+      }
+    };
   });
