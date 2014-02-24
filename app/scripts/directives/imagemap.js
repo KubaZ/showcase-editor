@@ -4,12 +4,7 @@ angular.module('imageMapEditor', [])
   .directive('imageMapsEditor', ['$document', function($document) {
     return {
       link: function (scope) {
-        scope.isDrawing = false;
         scope.shiftKey = false;
-        scope.startDrawingPolygon = false;
-        var isRectangle = true, isCircle, isPolygon;
-        var newArea = scope.map.areas ? scope.map.areas.length : 0;
-        var currentShape, currentShapeType = 'rectangle';
 
         if (!scope.map.areas) {
           scope.map.areas = [];
@@ -24,6 +19,25 @@ angular.module('imageMapEditor', [])
         $document.on('keyup', function () {
           scope.shiftKey = false;
         });
+
+        scope.removeArea = function (index) {
+          scope.map.areas.splice(index, 1);
+        };
+
+        scope.highlightArea = function (index) {
+          scope.map.areas[index].active = true;
+        };
+      }
+    };
+  }])
+  .directive('imageMapEditLayer', function () {
+    return {
+      link: function (scope, element) {
+        scope.isDrawing = false;
+        scope.startDrawingPolygon = false;
+        var isRectangle = true, isCircle, isPolygon;
+        var newArea = scope.map.areas ? scope.map.areas.length : 0;
+        var currentShape, currentShapeType = 'rectangle';
 
         function createNewArea (x, y) {
           newArea = scope.map.areas.length;
@@ -40,17 +54,26 @@ angular.module('imageMapEditor', [])
         function setCircleCoords (x, y) {
           var xOffset = Math.abs(currentShape.startX - x);
           var yOffset = Math.abs(currentShape.startY - y);
-          var radius;
+          var radius, positionLeft, positionTop, isWithinBoundries, diameter;
 
           if (xOffset <= yOffset) {
             radius = yOffset;
-            currentShape.coords[0] = currentShape.startX - radius;
-            currentShape.coords[1] = currentShape.startY - radius;
           } else {
             radius = xOffset;
-            currentShape.coords[0] = currentShape.startX - radius;
-            currentShape.coords[1] = currentShape.startY - radius;
           }
+
+          diameter = radius * 2;
+          positionLeft = currentShape.startX - radius;
+          positionTop = currentShape.startY - radius;
+          isWithinBoundries = positionLeft + diameter < element[0].width &&
+            positionTop + diameter < element[0].height;
+
+          if (positionLeft < 0 || positionTop < 0 || !isWithinBoundries) {
+            return;
+          }
+
+          currentShape.coords[0] = positionLeft;
+          currentShape.coords[1] = positionTop;
           currentShape.coords[2] = radius;
         }
 
@@ -104,7 +127,7 @@ angular.module('imageMapEditor', [])
           }
         };
 
-        scope.startDrawingShape = function (event) {
+        function startDrawingShape(event) {
           var x = event.offsetX ? event.offsetX : event.originalEvent.layerX;
           var y = event.offsetY ? event.offsetY : event.originalEvent.layerY;
 
@@ -139,9 +162,9 @@ angular.module('imageMapEditor', [])
             }
             currentShape.coords.push([x,y]);
           }
-        };
+        }
 
-        scope.drawShape = function (event) {
+        function drawShape (event) {
           if (scope.isDrawing) {
             var x = event.offsetX ? event.offsetX : event.originalEvent.layerX;
             var y = event.offsetY ? event.offsetY : event.originalEvent.layerY;
@@ -161,18 +184,22 @@ angular.module('imageMapEditor', [])
             }
             return;
           }
-        };
+        }
 
-        scope.removeArea = function (index) {
-          scope.map.areas.splice(index, 1);
-        };
+        element.bind('click', function (event) {
+          scope.$apply(function () {
+            startDrawingShape(event);
+          });
+        });
 
-        scope.highlightArea = function (index) {
-          scope.map.areas[index].active = true;
-        };
+        element.bind('mousemove', function (event) {
+          scope.$apply(function () {
+            drawShape(event);
+          });
+        });
       }
     };
-  }])
+  })
   .directive('mapArea', function () {
     return {
       restrict: 'A',

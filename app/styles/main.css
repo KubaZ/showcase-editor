@@ -82,14 +82,17 @@
 }
 
 .showcase-preview {
-  margin-bottom: 20px;
   position: relative;
   overflow-x: auto;
+  margin: 0 auto 20px;
+  border:1px solid transparent;
+  text-align: center;
 }
 
 .preview-container {
   position: relative;
   display: inline-block;
+  overflow: auto;
 }
 
 .showcase-preview .area {

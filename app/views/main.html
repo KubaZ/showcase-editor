@@ -24,7 +24,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="sidebar editor-toolbar">
-      <button class="btn btn-default btn-block" area-shape ng-click="changeDrawingShape('rectangle')">
+      <button class="btn btn-default btn-block active" area-shape ng-click="changeDrawingShape('rectangle')">
         <i class="editor-glyphicon editor-glyphicon-rectangle"></i>
       </button>
       <button class="btn btn-default btn-block" area-shape ng-click="changeDrawingShape('circle')">
@@ -40,10 +40,6 @@
       <div class="space-vertical-sm">
         <label class="control-label">Height:</label>
         <input class="form-control input-sm" type="number" ng-model="showcase.dimensions.height" />
-      </div>
-      <div class="space-vertical-sm">
-        <label for="scale" class="control-label">Scale: {{showcase.dimensions.scale}}</label>
-        <input class="form-control input-sm" type="range" name="points" min="0.1" max="2" step="0.1" ng-model="showcase.dimensions.scale">
       </div>
       <p class="value" ng-show="uploader.queue[0]">File size: <strong>{{ uploader.queue[0].file.size/1024|number:2 }} KB</strong></p>
       <div class="space-vertical-sm">
@@ -63,7 +59,7 @@
         <h3>Drop your image file here.</h3>
       </div>
       <div image-maps-editor="" ng-init="map = map || {}" class="editor-workspace">
-        <div class="showcase-preview text-center">
+        <div class="showcase-preview">
           <div class="preview-container" ng-init="isPreviewImageLoaded = isPreviewImageLoaded || false">
             <div class="canvas-container">
               <canvas class="preview"
@@ -85,9 +81,8 @@
             <canvas class="preview-transparent"
               width="{{ showcase.dimensions.width }}"
               height="{{ showcase.dimensions.height }}"
-              ng-class="{active: isDrawing, hidden: !isPreviewImageLoaded}"
-              ng-click="startDrawingShape($event)"
-              ng-mousemove="drawShape($event)"></canvas>
+              image-map-edit-layer
+              ng-class="{active: isDrawing, hidden: !isPreviewImageLoaded}"></canvas>
           </div>
         </div>
         <section class="area-properties-list clearfix">
@@ -98,23 +93,24 @@
             ng-mouseenter="area.active = true"
             ng-mouseleave="area.active = false"
             ng-class="{active: !area.active}">
+            <label class="control-label">{{$index + 1}}. </label>
             <div class="form-group">
-              <label for="" class="control-label">URL: </label>
+              <label class="control-label">URL: </label>
               <input type="text" class="form-control input-sm" ng-model="area.url">
             </div>
             <div class="form-group">
-              <label for="" class="control-label">Title: </label>
+              <label class="control-label">Title: </label>
               <input type="text" class="form-control input-sm" ng-model="area.title">
             </div>
             <div class="form-group">
-              <label for="" class="control-label">Target: </label>
+              <label class="control-label">Target: </label>
               <select class="form-control input-sm"
                 ng-init="area.target = area.target || linkTargets[0]"
                 ng-model="area.target"
                 ng-options="target.value for target in linkTargets"></select>
             </div>
             <div class="form-group">
-              <label for="" class="control-label">Area coords: </label>
+              <label class="control-label">Area coords: </label>
               <input type="text" class="form-control input-sm" ng-model="area.shape" imagemap-display-coords>
             </div>
             <button class="btn btn-danger" ng-click="removeArea($index)"><i class="glyphicon glyphicon-remove"></i></button>
