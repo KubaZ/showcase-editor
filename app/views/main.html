@@ -19,7 +19,11 @@
               <input type="text" class="form-control input-sm" ng-model="showcase.name">
             </div>
             <div class="form-group">
-              <label for="" class="control-label">Type: <input type="checkbox" class="form-control input-sm" ng-model="showcase.commercial"></label>
+              <label for="" class="control-label">Showcase Type:</label>
+              <select class="form-control"
+                ng-model="showcase.type"
+                ng-init="showcase.type = showcase.type || showcaseTypes[0]"
+                ng-options="type.size for type in showcaseTypes"></select>
             </div>
             <div class="form-group">
               <label for="" class="control-label">Order: </label>
