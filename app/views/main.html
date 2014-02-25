@@ -64,14 +64,8 @@
       <button class="btn btn-default btn-block" area-shape ng-click="changeDrawingShape('polygon')">
         <i class="editor-glyphicon editor-glyphicon-polygon"></i>
       </button>
-      <div class="space-vertical-sm">
-        <label class="control-label" style="margin-top: 10px;">Width:</label>
-        <input class="form-control input-sm" type="text" ng-value="showcase.type.width | pixels" ng-disabled="true"/>
-      </div>
-      <div class="space-vertical-sm">
-        <label class="control-label">Height:</label>
-        <input class="form-control input-sm" type="text" ng-value="showcase.type.height | pixels" ng-disabled="true"/>
-      </div>
+      <p class="value space-vertical-sm">Width: <strong>{{showcase.type.width | pixels}}</strong></p>
+      <p class="value">Height: <strong>{{showcase.type.height | pixels}}</strong></p>
       <p class="value" ng-show="uploader.queue[0]">File size: <strong>{{ uploader.queue[0].file.size/1024|number:2 }} KB</strong></p>
       <div class="space-vertical-sm">
         <button class="btn btn-success btn-block" ng-click="addShowcase()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
@@ -124,7 +118,7 @@
             ng-mouseenter="area.active = true"
             ng-mouseleave="area.active = false"
             ng-class="{active: !area.active}">
-            <ng-form name="areaPropertiesForm" class="form-inline">
+            <form name="areaPropertiesForm" class="form">
               <label class="control-label">{{$index + 1}}. </label>
               <div class="form-group">
                 <label class="control-label">URL: </label>
@@ -145,11 +139,23 @@
                   required></select>
               </div>
               <div class="form-group">
+                <label class="control-label">Redirect code: </label>
+                <select class="form-control input-sm"
+                  ng-init="area.redirectCode = area.redirectCode || redirectCodes[0]"
+                  ng-model="area.redirectCode"
+                  ng-options="target.value for target in redirectCodes"
+                  required></select>
+              </div>
+              <div class="form-group">
+                <label class="control-label">HTML: </label>
+                <input type="text" class="form-control" ng-model="area.html" />
+              </div>
+              <div class="form-group">
                 <label class="control-label">Area coords: </label>
                 <input type="text" class="form-control input-sm" ng-model="area.shape" imagemap-display-coords required>
               </div>
               <button class="btn btn-danger" ng-click="removeArea($index)"><i class="glyphicon glyphicon-remove"></i></button>
-            </ng-form>
+            </form>
           </div>
         </section>
       </div>

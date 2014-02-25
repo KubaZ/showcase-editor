@@ -105,6 +105,13 @@
   background: rgba(255,255,255,0.4);
 }
 
+.area-properties {
+  width: 31%;
+  margin: 10px 2% 0 0;
+  display: inline-block;
+  vertical-align: top;
+}
+
 .area-properties.active {
   background: #777;
 }

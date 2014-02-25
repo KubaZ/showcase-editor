@@ -28,7 +28,13 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
       {value: '_top', label: 'Load in the full body of the window'}
     ];
 
-    $scope.showcase = {type: $scope.showcaseTypes[2]};
+    $scope.redirectCodes = [
+      {value: '302', label: 'Load in a new window'},
+      {value: '303', label: 'Load in the same frame as it was clicked'},
+      {value: '304', label: 'Load in the parent frameset'}
+    ];
+
+    $scope.showcase = {type: $scope.showcaseTypes[2], redirectCode: $scope.redirectCodes[0]};
 
     function validateShowcaseData () {
       if (!$scope.showcaseImageForm.$valid) {
