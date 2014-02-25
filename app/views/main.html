@@ -42,11 +42,7 @@
         </li>
       </ul>
       <form novalidate="" name="showcaseImageForm" class="navbar-form navbar-right">
-        <div class="form-group">
-          <label class="control-label">Image URL: </label>
-          <input type="url" class="form-control input-sm" ng-change="displayImageFromUrl()" ng-model="showcase.image.url">
-        </div>
-        <button class="btn btn-default" trigger-file-input>Browse</button>
+        <button class="btn btn-default pull-right" trigger-file-input>Browse</button>
         <input type="file" class="hidden-file-input" ng-file-select="" ng-model="showcase.file">
       </form>
     </div>

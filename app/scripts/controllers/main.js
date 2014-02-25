@@ -18,7 +18,8 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
     $scope.showcaseTypes = [
       {name: 'Small', width: 300, height: 200},
       {name: 'Medium', width: 400, height: 300},
-      {name: 'Big', width: 700, height: 400}
+      {name: 'Big', width: 700, height: 400},
+      {name: 'Tall', width: 540, height: 520}
     ];
 
     $scope.linkTargets = [
