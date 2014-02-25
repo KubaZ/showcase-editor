@@ -12,6 +12,10 @@ describe('Directive: imagemap', function () {
     scope = $rootScope.$new();
   }));
 
-  it('should make hidden element visible', inject(function ($compile) {
+  it('should make areaShape element selected', inject(function ($compile) {
+    element = angular.element('<button area-shape></button>');
+    element = $compile(element)(scope);
+    element.triggerHandler('click');
+    expect(element.attr('class')).toBe('active');
   }));
 });

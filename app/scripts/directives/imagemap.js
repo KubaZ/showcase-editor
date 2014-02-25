@@ -352,21 +352,21 @@ angular.module('imageMapEditor', [])
             xCoords.push(shape.coords[i][0]);
             yCoords.push(shape.coords[i][1]);
           }
-          shape.left = Math.min.apply(Math, xCoords);
-          shape.top = Math.min.apply(Math, yCoords);
+          shape.startX = Math.min.apply(Math, xCoords);
+          shape.startY = Math.min.apply(Math, yCoords);
           var xMaxPosition = Math.max.apply(Math, xCoords);
           var yMaxPosition = Math.max.apply(Math, yCoords);
 
-          styles.left = shape.left;
-          styles.top = shape.top;
+          styles.left = shape.startX;
+          styles.top = shape.startY;
           angular.element(element).css(styles);
-          element[0].width = xMaxPosition - shape.left;
-          element[0].height = yMaxPosition - shape.top;
+          element[0].width = xMaxPosition - shape.startX;
+          element[0].height = yMaxPosition - shape.startY;
 
           ctx.beginPath();
-          ctx.moveTo(shape.coords[0][0] - shape.left, shape.coords[0][1] - shape.top);
+          ctx.moveTo(shape.coords[0][0] - shape.startX, shape.coords[0][1] - shape.startY);
           for (i = 0; i < shape.coords.length; i++) {
-            ctx.lineTo(shape.coords[i][0] - shape.left, shape.coords[i][1] - shape.top);
+            ctx.lineTo(shape.coords[i][0] - shape.startX, shape.coords[i][1] - shape.startY);
           }
           ctx.closePath();
           fillShape();

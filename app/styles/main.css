@@ -77,8 +77,14 @@
   height: 0;
 }
 
-.trigger {
-  cursor: pointer;
+.preview-container {
+  position: relative;
+  display: inline-block;
+  overflow: auto;
+}
+
+.preview-container canvas {
+  vertical-align: top;
 }
 
 .showcase-preview {
@@ -87,12 +93,6 @@
   margin: 0 auto 20px;
   border:1px solid transparent;
   text-align: center;
-}
-
-.preview-container {
-  position: relative;
-  display: inline-block;
-  overflow: auto;
 }
 
 .showcase-preview .area {
@@ -159,11 +159,6 @@
 .main .page-header {
   margin-top: 0;
 }
-
-.preview-container canvas {
-  vertical-align: top;
-}
-
 
 /*
  * Placeholder dashboard ideas
@@ -310,6 +305,7 @@ body {
 
 .dropdown-menu.dropdown-form {
   width: 300px;
+  padding: 0 10px 10px;
   background: #080808;
 }
 
