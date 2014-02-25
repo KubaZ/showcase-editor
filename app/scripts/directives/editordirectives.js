@@ -28,14 +28,6 @@ angular.module('showcaseEditor.directives', [])
           ctx.drawImage(image, 0, 0, attrs.width, attrs.height);
         }
 
-        function setImageDimensions() {
-          scope.$apply(function () {
-            scope.showcase.dimensions.width = image.width;
-            scope.showcase.dimensions.height = image.height;
-          });
-          drawImageToCanvas();
-        }
-
         function displayUploadedFile() {
           if (!helper.support) {
             return;
@@ -54,7 +46,7 @@ angular.module('showcaseEditor.directives', [])
 
           function onLoadFile(event) {
             image = new Image();
-            image.onload = setImageDimensions;
+            image.onload = drawImageToCanvas;
             image.src = event.target.result;
           }
 
@@ -69,13 +61,13 @@ angular.module('showcaseEditor.directives', [])
           var url = scope.showcase.image.url;
           if (helper.isImageUrlValid(url)) {
             image = new Image();
-            image.onload = setImageDimensions;
+            image.onload = drawImageToCanvas;
             image.src = url;
             scope.isPreviewImageLoaded = true;
           }
         };
 
-        scope.$watch('showcase.dimensions', function() {
+        scope.$watch('showcase.type', function() {
           if (image) {
             drawImageToCanvas();
           }

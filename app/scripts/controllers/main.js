@@ -15,8 +15,6 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
       url: 'upload.php'
     });
 
-    $scope.showcase = {dimensions: {width: 600, height: 400}};
-
     $scope.showcaseTypes = [
       {name: 'Small', width: 300, height: 200},
       {name: 'Medium', width: 400, height: 300},
@@ -30,17 +28,14 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
       {value: '_top', label: 'Load in the full body of the window'}
     ];
 
+    $scope.showcase = {type: $scope.showcaseTypes[2]};
+
     function validateShowcaseData () {
       if (!$scope.showcaseImageForm.$valid) {
         return false;
       }
       if (!$scope.showcasePropertiesForm.$valid) {
         return false;
-      }
-      for (var i = 0; i < $scope.map.areas.length; i++) {
-        if (!areaPropertiesForm[i].$valid) {
-          return false;
-        }
       }
       return true;
     }
@@ -70,7 +65,7 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
 
     $scope.removeCurrentImage = function () {
       uploader.queue.pop();
-      $scope.showcase = {dimensions: {width: 600, height: 400}};
+      $scope.showcase = {type: $scope.showcaseTypes[2]};
       $scope.map = {};
       $scope.map.areas = [];
     };

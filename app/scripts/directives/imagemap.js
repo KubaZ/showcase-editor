@@ -210,8 +210,8 @@ angular.module('imageMapEditor', [])
         var isMoving = false;
         var startPoints = [];
         var boundriesReached = false;
-        var yMax = scope.showcase.dimensions.height;
-        var xMax = scope.showcase.dimensions.width;
+        var yMax = scope.showcase.type.height;
+        var xMax = scope.showcase.type.width;
 
         function checkBoundries (boundries) {
           if (boundries[0] < 0 || boundries[2] > xMax) {

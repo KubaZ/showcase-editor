@@ -66,11 +66,11 @@
       </button>
       <div class="space-vertical-sm">
         <label class="control-label" style="margin-top: 10px;">Width:</label>
-        <input class="form-control input-sm" type="number" ng-model="showcase.dimensions.width" />
+        <input class="form-control input-sm" type="text" ng-value="showcase.type.width | pixels" ng-disabled="true"/>
       </div>
       <div class="space-vertical-sm">
         <label class="control-label">Height:</label>
-        <input class="form-control input-sm" type="number" ng-model="showcase.dimensions.height" />
+        <input class="form-control input-sm" type="text" ng-value="showcase.type.height | pixels" ng-disabled="true"/>
       </div>
       <p class="value" ng-show="uploader.queue[0]">File size: <strong>{{ uploader.queue[0].file.size/1024|number:2 }} KB</strong></p>
       <div class="space-vertical-sm">
@@ -95,8 +95,8 @@
             <div class="canvas-container">
               <canvas class="preview"
                 showcase-preview=""
-                width="{{ showcase.dimensions.width }}"
-                height="{{ showcase.dimensions.height }}"></canvas>
+                width="{{ showcase.type.width }}"
+                height="{{ showcase.type.height }}"></canvas>
               <canvas class="area"
                 ng-repeat="area in map.areas"
                 ng-mousedown="startShapeMove($event)"
@@ -110,45 +110,47 @@
                 map-area></canvas>
             </div>
             <canvas class="preview-transparent"
-              width="{{ showcase.dimensions.width }}"
-              height="{{ showcase.dimensions.height }}"
+              width="{{ showcase.type.width }}"
+              height="{{ showcase.type.height }}"
               image-map-edit-layer
               ng-class="{active: isDrawing, hidden: !isPreviewImageLoaded}"></canvas>
           </div>
         </div>
         <section class="area-properties-list clearfix">
           <h4 ng-show="map.areas.length > 0">Area properties:</h4>
-          <form novalidate="" name="areaPropertiesForm" class="area-properties form-inline well well-sm well-inverse"
+          <div class="area-properties well well-sm well-inverse"
             area-properties
             ng-repeat="area in map.areas"
             ng-mouseenter="area.active = true"
             ng-mouseleave="area.active = false"
             ng-class="{active: !area.active}">
-            <label class="control-label">{{$index + 1}}. </label>
-            <div class="form-group">
-              <label class="control-label">URL: </label>
-              <input type="text" class="form-control input-sm"
-                ng-model="area.url" required>
-            </div>
-            <div class="form-group">
-              <label class="control-label">Title: </label>
-              <input type="text" class="form-control input-sm"
-                ng-model="area.title" required>
-            </div>
-            <div class="form-group">
-              <label class="control-label">Target: </label>
-              <select class="form-control input-sm"
-                ng-init="area.target = area.target || linkTargets[0]"
-                ng-model="area.target"
-                ng-options="target.value for target in linkTargets"
-                required></select>
-            </div>
-            <div class="form-group">
-              <label class="control-label">Area coords: </label>
-              <input type="text" class="form-control input-sm" ng-model="area.shape" imagemap-display-coords required>
-            </div>
-            <button class="btn btn-danger" ng-click="removeArea($index)"><i class="glyphicon glyphicon-remove"></i></button>
-          </form>
+            <ng-form name="areaPropertiesForm" class="form-inline">
+              <label class="control-label">{{$index + 1}}. </label>
+              <div class="form-group">
+                <label class="control-label">URL: </label>
+                <input type="text" class="form-control input-sm"
+                  ng-model="area.url" required>
+              </div>
+              <div class="form-group">
+                <label class="control-label">Title: </label>
+                <input type="text" class="form-control input-sm"
+                  ng-model="area.title" required>
+              </div>
+              <div class="form-group">
+                <label class="control-label">Target: </label>
+                <select class="form-control input-sm"
+                  ng-init="area.target = area.target || linkTargets[0]"
+                  ng-model="area.target"
+                  ng-options="target.value for target in linkTargets"
+                  required></select>
+              </div>
+              <div class="form-group">
+                <label class="control-label">Area coords: </label>
+                <input type="text" class="form-control input-sm" ng-model="area.shape" imagemap-display-coords required>
+              </div>
+              <button class="btn btn-danger" ng-click="removeArea($index)"><i class="glyphicon glyphicon-remove"></i></button>
+            </ng-form>
+          </div>
         </section>
       </div>
     </div>
