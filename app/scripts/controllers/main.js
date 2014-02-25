@@ -30,7 +30,22 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
       {value: '_top', label: 'Load in the full body of the window'}
     ];
 
-    function parseMapData() {
+    function validateShowcaseData () {
+      if (!$scope.showcaseImageForm.$valid) {
+        return false;
+      }
+      if (!$scope.showcasePropertiesForm.$valid) {
+        return false;
+      }
+      for (var i = 0; i < $scope.map.areas.length; i++) {
+        if (!areaPropertiesForm[i].$valid) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function parseMapData () {
       var i = 0;
       var map = $scope.map;
       var length = map.areas.length;
@@ -46,7 +61,7 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
       return map;
     }
 
-    function showcaseDataToJson() {
+    function showcaseDataToJson () {
       var showcase = $scope.showcase;
       delete showcase.file;
       showcase.map = parseMapData();
@@ -61,7 +76,11 @@ editorControllers.controller('MainController', ['$scope', '$fileUploader',
     };
 
     $scope.addShowcase = function () {
-      console.log(showcaseDataToJson());
+      if (validateShowcaseData()) {
+        console.log(showcaseDataToJson());
+      } else {
+        alert('Missing showcase data');
+      }
     };
 
     uploader.filters.push(function(item /*{File|HTMLInputElement}*/) {
